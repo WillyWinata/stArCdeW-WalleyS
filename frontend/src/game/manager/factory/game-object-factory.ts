@@ -21,7 +21,6 @@ export class GameObjectFactory {
     const transform = new Transform(position, finalScale, finalRotation);
     const gameObject = new GameObject(finalName, transform);
     gameObject.addScripts(prefab);
-
     return gameObject;
   }
 }

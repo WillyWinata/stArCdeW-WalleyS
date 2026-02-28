@@ -19,7 +19,6 @@ export class GameObject {
     prefab.getScripts().forEach((Type) => {
       const script = new Type();
       script.gameObject = this;
-      script.start?.();
       this.scripts.push(script);
     });
   }

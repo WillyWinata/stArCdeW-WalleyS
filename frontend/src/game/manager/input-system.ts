@@ -1,10 +1,10 @@
 export class InputSystem {
   private static instance: InputSystem;
-  private keys: Record<string, boolean>;
 
-  constructor() {
-    this.keys = {};
-  }
+  private current: Record<string, boolean> = {};
+  private previous: Record<string, boolean> = {};
+
+  constructor() {}
 
   static getInstance(): InputSystem {
     if (!InputSystem.instance) {
@@ -14,14 +14,26 @@ export class InputSystem {
   }
 
   addKey(key: string) {
-    this.keys[key] = true;
+    this.current[key] = true;
   }
 
   removeKey(key: string) {
-    this.keys[key] = false;
+    this.current[key] = false;
   }
 
   getKey(key: string): boolean {
-    return this.keys[key];
+    return !!this.current[key];
+  }
+
+  getKeyDown(key: string): boolean {
+    return !this.previous[key] && !!this.current[key];
+  }
+
+  getKeyUp(key: string): boolean {
+    return !!this.previous[key] && !this.current[key];
+  }
+
+  endFrame() {
+    this.previous = { ...this.current };
   }
 }

@@ -1,5 +1,6 @@
 import { MainScene } from "../scene/main-scene";
 import { GameObjectFactory } from "./factory/game-object-factory";
+import { InputSystem } from "./input-system";
 import type { GameObject } from "./model/game-object";
 import type { MonoBehaviour } from "./model/mono-behaviour";
 import type { Prefab } from "./model/prefab";
@@ -47,6 +48,8 @@ export class Engine {
     this.update(dt);
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.draw(this.ctx);
+
+    InputSystem.getInstance().endFrame();
     requestAnimationFrame(this.loop);
   };
 
@@ -54,6 +57,10 @@ export class Engine {
     this.ctx = ctx;
     this.running = true;
 
+    //Run the Start Method before the first Frame of the Scene
+    this.scriptList.forEach((script) => {
+      script.start?.();
+    });
     this.lastTime = performance.now();
     requestAnimationFrame(this.loop);
   }
@@ -110,7 +117,11 @@ export class Engine {
     );
 
     this.activeScene.addGameObject(go);
+
     this.registerScripts(go.getScripts());
+    go.getScripts().forEach((script) => {
+      script.start?.();
+    });
 
     return go;
   }
@@ -118,5 +129,9 @@ export class Engine {
   despawn(go: GameObject) {
     this.unregisterScript(go.getScripts());
     this.activeScene.removeGameObject(go);
+  }
+
+  getContext(): CanvasRenderingContext2D {
+    return this.ctx;
   }
 }
