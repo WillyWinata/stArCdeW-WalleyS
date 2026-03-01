@@ -24,10 +24,4 @@ export class PlayerController extends MonoBehaviour {
       this.gameObject.transform.position.x -= this.speed * dt;
     }
   }
-  draw(ctx: CanvasRenderingContext2D): void {
-    const posX = this.gameObject.transform.position.x;
-    const posY = this.gameObject.transform.position.y;
-
-    ctx.fillRect(posX, posY, 100, 100);
-  }
 }

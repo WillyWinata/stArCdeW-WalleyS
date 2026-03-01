@@ -72,6 +72,7 @@ export class Engine {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
+    ctx.imageSmoothingEnabled = false;
     this.scriptList.forEach((script) => {
       if (script.draw) {
         script.draw(ctx);
@@ -108,13 +109,11 @@ export class Engine {
     position: Positon,
     opts?: { name?: string; rotation?: Rotation; scale?: Scale },
   ): GameObject {
-    const go = GameObjectFactory.Instantiate(
-      prefab,
-      position,
-      opts?.name,
-      opts?.rotation,
-      opts?.scale,
-    );
+    const go = GameObjectFactory.Instantiate(prefab, position, {
+      name: opts?.name,
+      rotation: opts?.rotation,
+      scale: opts?.scale,
+    });
 
     this.activeScene.addGameObject(go);
 

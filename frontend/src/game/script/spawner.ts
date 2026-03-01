@@ -6,7 +6,7 @@ import { PlayerPrefab } from "../prefab/player-prefab";
 
 export class Spawner extends MonoBehaviour {
   constructor() {
-    super(1);
+    super(2);
   }
 
   clone(): MonoBehaviour {

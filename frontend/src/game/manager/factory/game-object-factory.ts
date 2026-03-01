@@ -10,13 +10,15 @@ export class GameObjectFactory {
   static Instantiate(
     prefab: Prefab,
     position: Positon,
-    name?: string,
-    rotation?: Rotation,
-    scale?: Scale,
+    options?: {
+      name?: string;
+      rotation?: Rotation;
+      scale?: Scale;
+    },
   ): GameObject {
-    const finalName = name ?? prefab.name;
-    const finalScale = scale ?? prefab.scale;
-    const finalRotation = rotation ?? prefab.rotation;
+    const finalName = options?.name ?? prefab.name;
+    const finalScale = options?.scale ?? prefab.scale;
+    const finalRotation = options?.rotation ?? prefab.rotation;
 
     const transform = new Transform(position, finalScale, finalRotation);
     const gameObject = new GameObject(finalName, transform);

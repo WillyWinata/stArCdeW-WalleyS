@@ -13,6 +13,10 @@ export class Scene {
     this.gameObjects.push(gameObject);
   }
 
+  addGameObjects(...gameObjects: GameObject[]) {
+    this.gameObjects.push(...gameObjects);
+  }
+
   removeGameObject(gameObject: GameObject) {
     const idx = this.gameObjects.indexOf(gameObject);
     if (idx !== -1) {
