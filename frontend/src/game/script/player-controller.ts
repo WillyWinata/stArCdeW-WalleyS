@@ -5,7 +5,7 @@ export class PlayerController extends MonoBehaviour {
   clone(): MonoBehaviour {
     return new PlayerController();
   }
-  private speed: number = 300;
+  private speed: number = 220;
 
   constructor() {
     super(0);

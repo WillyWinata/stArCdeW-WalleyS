@@ -9,10 +9,10 @@ export class MainScene {
     const scene = new Scene("MainScene");
     const player = GameObjectFactory.Instantiate(
       PlayerPrefab.getPrefab(),
-      new Positon(0, 100),
+      new Positon(500, 500),
       {
         name: "Player 1",
-        scale: new Scale(5, 5),
+        scale: new Scale(3, 3),
       },
     );
 
