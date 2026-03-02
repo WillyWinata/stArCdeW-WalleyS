@@ -1,15 +1,15 @@
 import { Engine } from "../manager/engine";
 import { InputSystem } from "../manager/input-system";
-import { MonoBehaviour } from "../manager/model/mono-behaviour";
-import { Positon } from "../manager/model/transform/position";
+import { MonoBehavior } from "../manager/model/mono-behavior";
+import { Position } from "../manager/model/transform/position";
 import { PlayerPrefab } from "../prefab/player-prefab";
 
-export class Spawner extends MonoBehaviour {
+export class Spawner extends MonoBehavior {
   constructor() {
     super(2);
   }
 
-  clone(): MonoBehaviour {
+  clone(): MonoBehavior {
     return new Spawner();
   }
 
@@ -21,7 +21,7 @@ export class Spawner extends MonoBehaviour {
     if (InputSystem.getInstance().getKeyDown("e")) {
       console.log("Spawn!");
       const width = Engine.getInstance().getContext().canvas.width;
-      Engine.getInstance().spawn(PlayerPrefab.getPrefab(), new Positon(0, 0));
+      Engine.getInstance().spawn(PlayerPrefab.getPrefab(), new Position(0, 0));
     }
   }
 }

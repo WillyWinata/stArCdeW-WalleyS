@@ -2,17 +2,17 @@ import { MainScene } from "../scene/main-scene";
 import { GameObjectFactory } from "./factory/game-object-factory";
 import { InputSystem } from "./input-system";
 import type { GameObject } from "./model/game-object";
-import type { MonoBehaviour } from "./model/mono-behaviour";
+import type { MonoBehavior } from "./model/mono-behavior";
 import type { Prefab } from "./model/prefab";
 import type { Scene } from "./model/scene";
-import type { Positon } from "./model/transform/position";
+import type { Position } from "./model/transform/position";
 import type { Rotation } from "./model/transform/rotation";
 import type { Scale } from "./model/transform/scale";
 
 export class Engine {
   private static instance: Engine;
   private activeScene: Scene;
-  private scriptList: MonoBehaviour[] = [];
+  private scriptList: MonoBehavior[] = [];
 
   private ctx!: CanvasRenderingContext2D;
   private lastTime = 0;
@@ -80,7 +80,7 @@ export class Engine {
     });
   }
 
-  registerScripts(scripts: MonoBehaviour[]) {
+  registerScripts(scripts: MonoBehavior[]) {
     scripts.forEach((script) => {
       let l = 0;
       let r = this.scriptList.length;
@@ -95,7 +95,7 @@ export class Engine {
     });
   }
 
-  unregisterScript(scripts: MonoBehaviour[]) {
+  unregisterScript(scripts: MonoBehavior[]) {
     scripts.forEach((script) => {
       const idx = this.scriptList.indexOf(script);
       if (idx !== -1) {
@@ -106,7 +106,7 @@ export class Engine {
 
   spawn(
     prefab: Prefab,
-    position: Positon,
+    position: Position,
     opts?: { name?: string; rotation?: Rotation; scale?: Scale },
   ): GameObject {
     const go = GameObjectFactory.Instantiate(prefab, position, {

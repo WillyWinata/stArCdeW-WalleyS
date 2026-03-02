@@ -1,11 +1,14 @@
+import { GameConfiguration } from "../constants";
 import { InputSystem } from "../manager/input-system";
 import { AnimatedSprite } from "../manager/model/animated-sprite";
-import { MonoBehaviour } from "../manager/model/mono-behaviour";
+import { MonoBehavior } from "../manager/model/mono-behavior";
 
-export class PlayerRenderer extends MonoBehaviour {
-  clone(): MonoBehaviour {
-    return new PlayerRenderer();
+export class PlayerRenderer extends MonoBehavior {
+  clone(): MonoBehavior {
+    return new PlayerRenderer()
   }
+
+  private config = GameConfiguration;
 
   private legWalkingSprite = new AnimatedSprite(8);
   private legIdleSprite = new AnimatedSprite(8);
@@ -26,31 +29,32 @@ export class PlayerRenderer extends MonoBehaviour {
 
   async start() {
     await this.legWalkingSprite.loadFromPublicSequence(
-      "/assets/game/journey-of-pk/player/legs/walk/walk_",
+      this.config.GAME.ASSETS.PLAYER.LEGS.WALK,
       2,
     );
+    
     await this.legIdleSprite.loadFromPublicSequence(
-      "/assets/game/journey-of-pk/player/legs/idle/idle_",
+      this.config.GAME.ASSETS.PLAYER.LEGS.IDLE,
       1,
     );
 
     await this.bodyUpSprite.loadFromPublicSequence(
-      "/assets/game/journey-of-pk/player/body/body_up_",
+      this.config.GAME.ASSETS.PLAYER.BODY.UP,
       1,
     );
 
     await this.bodyDownSprite.loadFromPublicSequence(
-      "/assets/game/journey-of-pk/player/body/body_down_",
+      this.config.GAME.ASSETS.PLAYER.BODY.DOWN,
       1,
     );
 
     await this.bodyLeftSprite.loadFromPublicSequence(
-      "/assets/game/journey-of-pk/player/body/body_left_",
+      this.config.GAME.ASSETS.PLAYER.BODY.LEFT,
       1,
     );
 
     await this.bodyRightSprite.loadFromPublicSequence(
-      "/assets/game/journey-of-pk/player/body/body_right_",
+      this.config.GAME.ASSETS.PLAYER.BODY.RIGHT,
       1,
     );
   }

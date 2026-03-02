@@ -1,4 +1,4 @@
-import type { MonoBehaviour } from "./mono-behaviour";
+import type { MonoBehavior } from "./mono-behavior";
 import type { Rotation } from "./transform/rotation";
 import type { Scale } from "./transform/scale";
 
@@ -9,7 +9,7 @@ export class Prefab {
   rotation: Rotation;
   scale: Scale;
 
-  private scriptTypes: Array<new () => MonoBehaviour> = [];
+  private scriptTypes: Array<new () => MonoBehavior> = [];
 
   constructor(name: string, rotation: Rotation, scale: Scale) {
     this.rotation = rotation;
@@ -18,16 +18,16 @@ export class Prefab {
     this.name = name;
   }
 
-  addScript(type: new () => MonoBehaviour) {
+  addScript(type: new () => MonoBehavior) {
     this.scriptTypes.push(type);
   }
 
-  removeScript(type: new () => MonoBehaviour) {
+  removeScript(type: new () => MonoBehavior) {
     const i = this.scriptTypes.indexOf(type);
     if (i !== -1) this.scriptTypes.splice(i, 1);
   }
 
-  getScripts(): Array<new () => MonoBehaviour> {
+  getScripts(): Array<new () => MonoBehavior> {
     return this.scriptTypes;
   }
 }

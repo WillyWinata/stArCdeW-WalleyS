@@ -1,4 +1,4 @@
-import { MonoBehaviour } from "./mono-behaviour";
+import { MonoBehavior } from "./mono-behavior";
 import type { Prefab } from "./prefab";
 import type { Transform } from "./transform/transform";
 
@@ -7,7 +7,7 @@ export class GameObject {
   name: string;
   transform: Transform;
 
-  private scripts: MonoBehaviour[] = [];
+  private scripts: MonoBehavior[] = [];
 
   constructor(name: string, transform: Transform) {
     this.id = crypto.randomUUID();
@@ -23,7 +23,7 @@ export class GameObject {
     });
   }
 
-  getScripts(): MonoBehaviour[] {
+  getScripts(): MonoBehavior[] {
     return this.scripts;
   }
 }

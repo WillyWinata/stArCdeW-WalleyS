@@ -1,8 +1,8 @@
 import { InputSystem } from "../manager/input-system";
-import { MonoBehaviour } from "../manager/model/mono-behaviour";
+import { MonoBehavior } from "../manager/model/mono-behavior";
 
-export class PlayerController extends MonoBehaviour {
-  clone(): MonoBehaviour {
+export class PlayerController extends MonoBehavior {
+  clone(): MonoBehavior {
     return new PlayerController();
   }
   private speed: number = 220;
