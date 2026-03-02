@@ -1,5 +1,13 @@
 export const GameConfiguration = {
   GAME: {
+    CONTROLS: {
+      MOVEMENT: {
+        UP: "i",
+        DOWN: "k",
+        LEFT: "j",
+        RIGHT: "l",
+      },
+    },
     PLAYER: {
       OFFSET: {
         LEGS: {

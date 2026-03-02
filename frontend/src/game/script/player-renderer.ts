@@ -5,10 +5,11 @@ import { MonoBehavior } from "../manager/model/mono-behavior";
 
 export class PlayerRenderer extends MonoBehavior {
   clone(): MonoBehavior {
-    return new PlayerRenderer()
+    return new PlayerRenderer();
   }
 
-  private config = GameConfiguration;
+  private playerAssetConfig = GameConfiguration.GAME.ASSETS.PLAYER;
+  private movementConfig = GameConfiguration.GAME.CONTROLS.MOVEMENT;
 
   private legWalkingSprite = new AnimatedSprite(8);
   private legIdleSprite = new AnimatedSprite(8);
@@ -18,8 +19,8 @@ export class PlayerRenderer extends MonoBehavior {
   private bodyLeftSprite = new AnimatedSprite(8);
   private bodyRightSprite = new AnimatedSprite(8);
 
-  private lastDir: string = "s";
-  private dirOwner: "w" | "a" | "s" | "d" | null = null;
+  private lastDir: string = this.movementConfig.DOWN;
+  private dirOwner: string = this.movementConfig.DOWN;
 
   private state: "idle" | "walk" = "idle";
 
@@ -29,50 +30,50 @@ export class PlayerRenderer extends MonoBehavior {
 
   async start() {
     await this.legWalkingSprite.loadFromPublicSequence(
-      this.config.GAME.ASSETS.PLAYER.LEGS.WALK,
+      this.playerAssetConfig.LEGS.WALK,
       2,
     );
-    
+
     await this.legIdleSprite.loadFromPublicSequence(
-      this.config.GAME.ASSETS.PLAYER.LEGS.IDLE,
+      this.playerAssetConfig.LEGS.IDLE,
       1,
     );
 
     await this.bodyUpSprite.loadFromPublicSequence(
-      this.config.GAME.ASSETS.PLAYER.BODY.UP,
+      this.playerAssetConfig.BODY.UP,
       1,
     );
 
     await this.bodyDownSprite.loadFromPublicSequence(
-      this.config.GAME.ASSETS.PLAYER.BODY.DOWN,
+      this.playerAssetConfig.BODY.DOWN,
       1,
     );
 
     await this.bodyLeftSprite.loadFromPublicSequence(
-      this.config.GAME.ASSETS.PLAYER.BODY.LEFT,
+      this.playerAssetConfig.BODY.LEFT,
       1,
     );
 
     await this.bodyRightSprite.loadFromPublicSequence(
-      this.config.GAME.ASSETS.PLAYER.BODY.RIGHT,
+      this.playerAssetConfig.BODY.RIGHT,
       1,
     );
   }
   update(dt: number): void {
     const input = InputSystem.getInstance();
 
-    const pressW = input.getKey("w");
-    const pressA = input.getKey("a");
-    const pressS = input.getKey("s");
-    const pressD = input.getKey("d");
+    const pressW = input.getKey(this.movementConfig.UP);
+    const pressS = input.getKey(this.movementConfig.DOWN);
+    const pressA = input.getKey(this.movementConfig.LEFT);
+    const pressD = input.getKey(this.movementConfig.RIGHT);
 
-    if (this.dirOwner === null || !input.getKey(this.dirOwner)) {
-      if (pressD) this.dirOwner = "d";
-      else if (pressA) this.dirOwner = "a";
-      else if (pressW) this.dirOwner = "w";
-      else if (pressS) this.dirOwner = "s";
-      else this.dirOwner = null;
-    }
+    // if (this.dirOwner === null || !input.getKey(this.dirOwner)) {
+    //   if (pressD) this.dirOwner = "d";
+    //   else if (pressA) this.dirOwner = "a";
+    //   else if (pressW) this.dirOwner = "w";
+    //   else if (pressS) this.dirOwner = "s";
+    //   else this.dirOwner = null;
+    // }
 
     const moving = pressW || pressA || pressS || pressD;
     const nextState: "idle" | "walk" = moving ? "walk" : "idle";
@@ -89,17 +90,21 @@ export class PlayerRenderer extends MonoBehavior {
       dt,
     );
 
-    if (input.getKeyDown("w")) this.dirOwner = "w";
-    if (input.getKeyDown("a")) this.dirOwner = "a";
-    if (input.getKeyDown("s")) this.dirOwner = "s";
-    if (input.getKeyDown("d")) this.dirOwner = "d";
+    if (input.getKeyDown(this.movementConfig.UP))
+      this.dirOwner = this.movementConfig.UP;
+    if (input.getKeyDown(this.movementConfig.DOWN))
+      this.dirOwner = this.movementConfig.DOWN;
+    if (input.getKeyDown(this.movementConfig.LEFT))
+      this.dirOwner = this.movementConfig.LEFT;
+    if (input.getKeyDown(this.movementConfig.RIGHT))
+      this.dirOwner = this.movementConfig.RIGHT;
 
     if (this.dirOwner && input.getKeyUp(this.dirOwner)) {
-      if (pressD) this.dirOwner = "d";
-      else if (pressA) this.dirOwner = "a";
-      else if (pressW) this.dirOwner = "w";
-      else if (pressS) this.dirOwner = "s";
-      else this.dirOwner = null;
+      if (pressD) this.dirOwner = this.movementConfig.RIGHT;
+      else if (pressA) this.dirOwner = this.movementConfig.DOWN;
+      else if (pressW) this.dirOwner = this.movementConfig.UP;
+      else if (pressS) this.dirOwner = this.movementConfig.LEFT;
+      else this.dirOwner = this.movementConfig.DOWN;
     }
 
     if (this.dirOwner) this.lastDir = this.dirOwner;
@@ -138,8 +143,7 @@ export class PlayerRenderer extends MonoBehavior {
       );
     }
 
-    console.log(`last dir: ${this.lastDir}`);
-    if (this.lastDir === "w") {
+    if (this.lastDir === this.movementConfig.UP) {
       this.bodyUpSprite.draw(
         ctx,
         baseX + bodyOffsetX,
@@ -147,7 +151,7 @@ export class PlayerRenderer extends MonoBehavior {
         sx,
         sy,
       );
-    } else if (this.lastDir === "a") {
+    } else if (this.lastDir === this.movementConfig.LEFT) {
       this.bodyLeftSprite.draw(
         ctx,
         baseX + bodyOffsetX,
@@ -155,7 +159,7 @@ export class PlayerRenderer extends MonoBehavior {
         sx,
         sy,
       );
-    } else if (this.lastDir === "d") {
+    } else if (this.lastDir === this.movementConfig.RIGHT) {
       this.bodyRightSprite.draw(
         ctx,
         baseX + bodyOffsetX,
@@ -163,7 +167,7 @@ export class PlayerRenderer extends MonoBehavior {
         sx,
         sy,
       );
-    } else if (this.lastDir === "s") {
+    } else if (this.lastDir === this.movementConfig.DOWN) {
       this.bodyDownSprite.draw(
         ctx,
         baseX + bodyOffsetX,
