@@ -20,7 +20,7 @@ export class PlayerRenderer extends MonoBehavior {
   private bodyRightSprite = new AnimatedSprite(8);
 
   private lastDir: string = this.movementConfig.DOWN;
-  private dirOwner: string = this.movementConfig.DOWN;
+  private dirOwner: string | null = null;
 
   private state: "idle" | "walk" = "idle";
 
@@ -67,14 +67,6 @@ export class PlayerRenderer extends MonoBehavior {
     const pressA = input.getKey(this.movementConfig.LEFT);
     const pressD = input.getKey(this.movementConfig.RIGHT);
 
-    // if (this.dirOwner === null || !input.getKey(this.dirOwner)) {
-    //   if (pressD) this.dirOwner = "d";
-    //   else if (pressA) this.dirOwner = "a";
-    //   else if (pressW) this.dirOwner = "w";
-    //   else if (pressS) this.dirOwner = "s";
-    //   else this.dirOwner = null;
-    // }
-
     const moving = pressW || pressA || pressS || pressD;
     const nextState: "idle" | "walk" = moving ? "walk" : "idle";
 
@@ -101,10 +93,10 @@ export class PlayerRenderer extends MonoBehavior {
 
     if (this.dirOwner && input.getKeyUp(this.dirOwner)) {
       if (pressD) this.dirOwner = this.movementConfig.RIGHT;
-      else if (pressA) this.dirOwner = this.movementConfig.DOWN;
+      else if (pressA) this.dirOwner = this.movementConfig.LEFT;
       else if (pressW) this.dirOwner = this.movementConfig.UP;
-      else if (pressS) this.dirOwner = this.movementConfig.LEFT;
-      else this.dirOwner = this.movementConfig.DOWN;
+      else if (pressS) this.dirOwner = this.movementConfig.DOWN;
+      else this.dirOwner = null;
     }
 
     if (this.dirOwner) this.lastDir = this.dirOwner;
@@ -118,8 +110,9 @@ export class PlayerRenderer extends MonoBehavior {
     const baseX = x;
     const baseY = y;
 
-    const legsOffset = { x: 0, y: 0 };
-    const bodyOffset = { x: -3, y: -13 };
+    const playerOffset = GameConfiguration.GAME.PLAYER.OFFSET;
+    const legsOffset = { x: playerOffset.LEGS.x, y: playerOffset.LEGS.y };
+    const bodyOffset = { x: playerOffset.BODY.x, y: playerOffset.BODY.y };
 
     const legOffsetX = this.gameObject.transform.scale.x * legsOffset.x;
     const legOffsetY = this.gameObject.transform.scale.y * legsOffset.y;

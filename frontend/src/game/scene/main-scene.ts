@@ -1,30 +1,21 @@
 import { GameObjectFactory } from "../manager/factory/game-object-factory";
 import { Scene } from "../manager/model/scene";
 import { Position } from "../manager/model/transform/position";
-import { Scale } from "../manager/model/transform/scale";
-import { PlayerPrefab } from "../prefab/player-prefab";
+import { MapPrefab } from "../prefab/map-prefab";
+import { MapInit } from "../script/map_init";
 
 export class MainScene {
   static getScene(): Scene {
     const scene = new Scene("MainScene");
-    const player = GameObjectFactory.Instantiate(
-      PlayerPrefab.getPrefab(),
-      new Position(500, 500),
-      {
-        name: "Player 1",
-        scale: new Scale(3, 3),
-      },
+
+    const map = GameObjectFactory.Instantiate(
+      MapPrefab.getPrefab(),
+      new Position(0, 0),
     );
 
-    const player2 = GameObjectFactory.Instantiate(
-      PlayerPrefab.getPrefab(),
-      new Position(700, 700),
-      {
-        name: "Player 1",
-        scale: new Scale(3, 3),
-      },
-    );
-    scene.addGameObjects(player, player2);
+    const mi = map.getScript(MapInit);
+    mi!.mapPath = "/assets/game/journey-of-pk/map/level_0.txt";
+    scene.addGameObjects(map);
     return scene;
   }
 }

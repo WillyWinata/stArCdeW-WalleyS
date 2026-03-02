@@ -2,10 +2,10 @@ export const GameConfiguration = {
   GAME: {
     CONTROLS: {
       MOVEMENT: {
-        UP: "i",
-        DOWN: "k",
-        LEFT: "j",
-        RIGHT: "l",
+        UP: "w",
+        DOWN: "s",
+        LEFT: "a",
+        RIGHT: "d",
       },
     },
     PLAYER: {

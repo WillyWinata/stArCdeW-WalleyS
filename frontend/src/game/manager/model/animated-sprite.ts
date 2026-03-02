@@ -1,3 +1,5 @@
+import type { Position } from "./transform/position";
+
 export class AnimatedSprite {
   private frames: HTMLImageElement[] = [];
 
@@ -40,6 +42,72 @@ export class AnimatedSprite {
     }
 
     this.frames = await Promise.all(paths.map((src) => this.loadOne(src)));
+    this.currentFrame = 0;
+    this.time = 0;
+    this.ready = true;
+  }
+  async loadFromTileset(
+    tilesetPath: string,
+    tileSize: number,
+    ...coords: Position[]
+  ) {
+    const tileset = await this.loadOne(tilesetPath);
+
+    if (coords.length === 0) {
+      this.frames = [];
+      this.ready = true;
+      this.currentFrame = 0;
+      this.time = 0;
+      return;
+    }
+
+    const frames: HTMLImageElement[] = [];
+
+    for (const { x, y } of coords) {
+      const sx = x * tileSize;
+      const sy = y * tileSize;
+
+      if (
+        sx < 0 ||
+        sy < 0 ||
+        sx + tileSize > tileset.width ||
+        sy + tileSize > tileset.height
+      ) {
+        throw new Error(
+          `Tile out of bounds: (${x},${y}) for tileset ${tilesetPath} (${tileset.width}x${tileset.height}), tileSize=${tileSize}`,
+        );
+      }
+
+      const c = document.createElement("canvas");
+      c.width = tileSize;
+      c.height = tileSize;
+
+      const cctx = c.getContext("2d");
+      if (!cctx) throw new Error("Failed to get canvas 2D context");
+
+      cctx.drawImage(
+        tileset,
+        sx,
+        sy,
+        tileSize,
+        tileSize,
+        0,
+        0,
+        tileSize,
+        tileSize,
+      );
+
+      const img = new Image();
+      img.src = c.toDataURL("image/png");
+      await new Promise<void>((res, rej) => {
+        img.onload = () => res();
+        img.onerror = () => rej(new Error("Failed to create tile frame image"));
+      });
+
+      frames.push(img);
+    }
+
+    this.frames = frames;
     this.currentFrame = 0;
     this.time = 0;
     this.ready = true;

@@ -2,6 +2,8 @@ import { MonoBehavior } from "./mono-behavior";
 import type { Prefab } from "./prefab";
 import type { Transform } from "./transform/transform";
 
+type Ctor<T> = new (...args: any[]) => T;
+
 export class GameObject {
   id: string;
   name: string;
@@ -25,5 +27,11 @@ export class GameObject {
 
   getScripts(): MonoBehavior[] {
     return this.scripts;
+  }
+
+  getScript<T extends MonoBehavior>(Type: Ctor<T>): T | null {
+    return (
+      (this.scripts.find((s) => s instanceof Type) as T | undefined) ?? null
+    );
   }
 }
