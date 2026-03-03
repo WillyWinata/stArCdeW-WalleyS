@@ -14,6 +14,7 @@ export class GameObject {
   id: string;
   name: string;
   transform: Transform;
+  isLoaded: boolean;
 
   private colliders: Collider[] = [];
 
@@ -23,6 +24,7 @@ export class GameObject {
     this.id = crypto.randomUUID();
     this.name = context.name;
     this.transform = context.transform;
+    this.isLoaded = false;
   }
 
   addScriptsFromPrefab(prefab: Prefab) {
@@ -46,9 +48,10 @@ export class GameObject {
   addColliders(collders: Collider[]): void {
     this.colliders = collders;
   }
+
   drawAllColliders(ctx: CanvasRenderingContext2D) {
     this.colliders.forEach((collider) => {
-      collider.drawDebugLines(ctx, "red");
+      collider.drawDebugLines(ctx);
     });
   }
 

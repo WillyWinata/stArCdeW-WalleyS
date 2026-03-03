@@ -12,36 +12,21 @@ export class BoxCollider extends Collider {
     options?: {
       debugColor?: string;
       isTrigger?: boolean;
-      relative?: boolean;
     },
   ) {
-    const { debugColor, isTrigger = false, relative = true } = options ?? {};
-    super(offset, relative, isTrigger, debugColor);
+    const { debugColor, isTrigger = false } = options ?? {};
+    super(offset, isTrigger, debugColor);
     this.width = width;
     this.height = height;
   }
 
-  private getWorldBox(): { x: number; y: number; w: number; h: number } {
+  public getWorldBox(): { x: number; y: number; w: number; h: number } {
     if (!this.gameObject) {
-      return {
-        x: this.offset.x,
-        y: this.offset.y,
-        w: this.width,
-        h: this.height,
-      };
+      throw new Error("Game object not found");
     }
 
     const goPos = this.gameObject.transform.position;
     const goScale = this.gameObject.transform.scale;
-
-    if (!this.relative) {
-      return {
-        x: this.offset.x,
-        y: this.offset.y,
-        w: this.width,
-        h: this.height,
-      };
-    }
 
     const x = goPos.x + this.offset.x * goScale.x;
     const y = goPos.y + this.offset.y * goScale.y;
@@ -51,14 +36,11 @@ export class BoxCollider extends Collider {
     return { x, y, w, h };
   }
 
-  protected debugLines(
-    canvas: CanvasRenderingContext2D,
-    color: string | CanvasGradient | CanvasPattern,
-  ): void {
-    canvas.strokeStyle = color;
+  protected debugLines(ctx: CanvasRenderingContext2D): void {
+    ctx.strokeStyle = this.debugColor;
 
     const { x, y, w, h } = this.getWorldBox();
 
-    canvas.strokeRect(x, y, w, h);
+    ctx.strokeRect(x, y, w, h);
   }
 }

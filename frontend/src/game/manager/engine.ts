@@ -86,7 +86,9 @@ export class Engine {
       }
     });
     this.colliderList.forEach((collider) => {
-      collider.drawDebugLines(ctx, "red");
+      if (collider.gameObject?.isLoaded) {
+        collider.drawDebugLines(ctx);
+      }
     });
   }
 

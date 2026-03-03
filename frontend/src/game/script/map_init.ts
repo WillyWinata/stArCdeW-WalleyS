@@ -43,12 +43,17 @@ export class MapInit extends MonoBehavior {
     this.originX =
       width / 2 -
       (mapRows / 2) * this.tileSize * this.gameObject.transform.scale.x;
+
     this.originY =
       height / 2 -
       (mapCols / 2) * this.tileSize * this.gameObject.transform.scale.y;
 
+    this.gameObject.transform.position.x = this.originX;
+    this.gameObject.transform.position.y = this.originY;
+
     engine.spawn(PlayerPrefab.getPrefab(), new Position(width / 2, height / 2));
     this.loaded = true;
+    this.gameObject.isLoaded = true;
   }
 
   update(dt: number): void {}

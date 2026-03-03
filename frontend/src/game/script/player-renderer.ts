@@ -58,6 +58,7 @@ export class PlayerRenderer extends MonoBehavior {
       this.playerAssetConfig.BODY.RIGHT,
       1,
     );
+    this.gameObject.isLoaded = true;
   }
   update(dt: number): void {
     const input = InputSystem.getInstance();
