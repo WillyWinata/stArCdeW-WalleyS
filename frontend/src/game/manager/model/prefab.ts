@@ -30,4 +30,8 @@ export class Prefab {
   getScripts(): Array<new () => MonoBehavior> {
     return this.scriptTypes;
   }
+
+  getColliders() {
+    return 
+  }
 }

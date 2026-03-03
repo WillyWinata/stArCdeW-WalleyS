@@ -1,6 +1,7 @@
 import { Prefab } from "../manager/model/prefab";
 import { Rotation } from "../manager/model/transform/rotation";
 import { Scale } from "../manager/model/transform/scale";
+import { BoxCollider, Collider } from "../physics/collisions/collider-physics";
 import { MapInit } from "../script/map_init";
 
 export class MapPrefab {

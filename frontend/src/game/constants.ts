@@ -35,4 +35,5 @@ export const GameConfiguration = {
       },
     },
   },
+  DEBUG_MODE: true,
 };

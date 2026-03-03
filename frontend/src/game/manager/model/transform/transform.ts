@@ -12,3 +12,17 @@ export class Transform {
     this.rotation = rotation;
   }
 }
+
+export const defaultTransform: Transform = new Transform(
+  {
+    x: 0,
+    y: 0,
+  },
+  {
+    x: 0,
+    y: 0,
+  },
+  {
+    z: 0,
+  },
+);

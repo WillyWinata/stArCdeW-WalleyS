@@ -9,6 +9,7 @@ export class PlayerPrefab {
     const prefab = new Prefab("Player", new Rotation(0), new Scale(3, 3));
     prefab.addScript(PlayerController);
     prefab.addScript(PlayerRenderer);
+
     return prefab;
   }
 }

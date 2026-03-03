@@ -1,23 +1,31 @@
+import type { Collider } from "../../physics/collisions/collider-physics";
 import { MonoBehavior } from "./mono-behavior";
-import type { Prefab } from "./prefab";
+import { Prefab } from "./prefab";
 import type { Transform } from "./transform/transform";
 
 type Ctor<T> = new (...args: any[]) => T;
+
+interface GameObjectContext {
+  name: string;
+  transform: Transform;
+}
 
 export class GameObject {
   id: string;
   name: string;
   transform: Transform;
 
+  private collider: Collider[] = [];
+
   private scripts: MonoBehavior[] = [];
 
-  constructor(name: string, transform: Transform) {
+  constructor(context: GameObjectContext) {
     this.id = crypto.randomUUID();
-    this.name = name;
-    this.transform = transform;
+    this.name = context.name;
+    this.transform = context.transform;
   }
 
-  addScripts(prefab: Prefab) {
+  addScriptsFromPrefab(prefab: Prefab) {
     prefab.getScripts().forEach((Type) => {
       const script = new Type();
       script.gameObject = this;
@@ -34,4 +42,6 @@ export class GameObject {
       (this.scripts.find((s) => s instanceof Type) as T | undefined) ?? null
     );
   }
+
+  addColliders(collider?: Collider): void {}
 }

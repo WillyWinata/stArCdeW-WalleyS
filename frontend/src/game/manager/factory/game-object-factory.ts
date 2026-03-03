@@ -1,3 +1,4 @@
+import { Collider } from "../../physics/collisions/collider-physics";
 import { Engine } from "../engine";
 import { GameObject } from "../model/game-object";
 import type { Prefab } from "../model/prefab";
@@ -14,6 +15,7 @@ export class GameObjectFactory {
       name?: string;
       rotation?: Rotation;
       scale?: Scale;
+      colliders?: Collider[];
     },
   ): GameObject {
     const finalName = options?.name ?? prefab.name;
@@ -21,8 +23,12 @@ export class GameObjectFactory {
     const finalRotation = options?.rotation ?? prefab.rotation;
 
     const transform = new Transform(position, finalScale, finalRotation);
-    const gameObject = new GameObject(finalName, transform);
-    gameObject.addScripts(prefab);
+    const gameObject = new GameObject({
+      name: finalName,
+      transform: transform,
+    });
+    gameObject.addScriptsFromPrefab(prefab);
+
     return gameObject;
   }
 }
