@@ -51,14 +51,32 @@ export const GameConfiguration = {
     ASSETS: {
       PLAYER: {
         LEGS: {
-          WALK: "/assets/game/journey-of-pk/player/legs/walk/walk_",
-          IDLE: "/assets/game/journey-of-pk/player/legs/idle/idle_",
+          WALK: {
+            PATH: "/assets/game/journey-of-pk/player/legs/walk/walk_",
+            FRAME: 2,
+          },
+          IDLE: {
+            PATH: "/assets/game/journey-of-pk/player/legs/idle/idle_",
+            FRAME: 1,
+          },
         },
         BODY: {
-          UP: "/assets/game/journey-of-pk/player/body/body_up_",
-          DOWN: "/assets/game/journey-of-pk/player/body/body_down_",
-          LEFT: "/assets/game/journey-of-pk/player/body/body_left_",
-          RIGHT: "/assets/game/journey-of-pk/player/body/body_right_",
+          UP: {
+            PATH: "/assets/game/journey-of-pk/player/body/body_up_",
+            FRAME: 1,
+          },
+          DOWN: {
+            PATH: "/assets/game/journey-of-pk/player/body/body_down_",
+            FRAME: 1,
+          },
+          LEFT: {
+            PATH: "/assets/game/journey-of-pk/player/body/body_left_",
+            FRAME: 1,
+          },
+          RIGHT: {
+            PATH: "/assets/game/journey-of-pk/player/body/body_right_",
+            FRAME: 1,
+          },
         },
       },
     },

@@ -1,5 +1,5 @@
 import { GameConfiguration } from "../constants";
-import { InputSystem } from "../manager/input-system";
+import { InputSystem } from "../manager/InputSystem";
 import { MonoBehavior } from "../manager/model/mono-behavior";
 
 export class PlayerController extends MonoBehavior {

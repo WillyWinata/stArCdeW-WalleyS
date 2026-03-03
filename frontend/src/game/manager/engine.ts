@@ -1,7 +1,7 @@
 import type { Collider } from "../physics/collider/Collider";
 import { MainScene } from "../scene/main-scene";
 import { GameObjectFactory } from "./factory/game-object-factory";
-import { InputSystem } from "./input-system";
+import { InputSystem } from "./InputSystem";
 import type { GameObject } from "./model/game-object";
 import type { MonoBehavior } from "./model/mono-behavior";
 import type { Prefab } from "./model/prefab";
