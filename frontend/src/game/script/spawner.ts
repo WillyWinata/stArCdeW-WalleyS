@@ -1,5 +1,5 @@
 import { Engine } from "../manager/engine";
-import { InputSystem } from "../manager/input-system";
+import { InputSystem } from "../manager/InputSystem";
 import { MonoBehavior } from "../manager/model/mono-behavior";
 import { Position } from "../manager/model/transform/position";
 import { PlayerPrefab } from "../prefab/player-prefab";
