@@ -1,4 +1,4 @@
-import type { Collider } from "../../physics/collisions/collider-physics";
+import type { Collider } from "../../physics/collider/Collider";
 import { MonoBehavior } from "./mono-behavior";
 import { Prefab } from "./prefab";
 import type { Transform } from "./transform/transform";
@@ -15,7 +15,7 @@ export class GameObject {
   name: string;
   transform: Transform;
 
-  private collider: Collider[] = [];
+  private colliders: Collider[] = [];
 
   private scripts: MonoBehavior[] = [];
 
@@ -43,5 +43,16 @@ export class GameObject {
     );
   }
 
-  addColliders(collider?: Collider): void {}
+  addColliders(collders: Collider[]): void {
+    this.colliders = collders;
+  }
+  drawAllColliders(ctx: CanvasRenderingContext2D) {
+    this.colliders.forEach((collider) => {
+      collider.drawDebugLines(ctx, "red");
+    });
+  }
+
+  getColliders(): Collider[] {
+    return this.colliders;
+  }
 }

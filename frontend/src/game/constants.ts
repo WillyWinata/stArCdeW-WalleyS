@@ -1,5 +1,33 @@
 export const GameConfiguration = {
   GAME: {
+    COLLIDER: {
+      COLLIDER_COLOR: "red",
+      DEBUG_MODE: true,
+
+      PLAYER: {
+        HURT_BOX: {
+          OFFSET: {
+            X: 0,
+            Y: -9,
+          },
+          SIZE: {
+            WIDTH: 10,
+            HEIGHT: 12,
+          },
+        },
+
+        COLLISION_BOX: {
+          OFFSET: {
+            X: -3,
+            Y: -13,
+          },
+          SIZE: {
+            WIDTH: 15,
+            HEIGHT: 16,
+          },
+        },
+      },
+    },
     CONTROLS: {
       MOVEMENT: {
         UP: "w",
@@ -35,5 +63,4 @@ export const GameConfiguration = {
       },
     },
   },
-  DEBUG_MODE: true,
 };

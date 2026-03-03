@@ -1,3 +1,4 @@
+import type { Collider } from "../../physics/collider/Collider";
 import type { MonoBehavior } from "./mono-behavior";
 import type { Rotation } from "./transform/rotation";
 import type { Scale } from "./transform/scale";
@@ -10,6 +11,7 @@ export class Prefab {
   scale: Scale;
 
   private scriptTypes: Array<new () => MonoBehavior> = [];
+  private colliders: Collider[] = [];
 
   constructor(name: string, rotation: Rotation, scale: Scale) {
     this.rotation = rotation;
@@ -31,7 +33,10 @@ export class Prefab {
     return this.scriptTypes;
   }
 
+  addCollider(collider: Collider) {
+    this.colliders.push(collider);
+  }
   getColliders() {
-    return 
+    return this.colliders;
   }
 }
