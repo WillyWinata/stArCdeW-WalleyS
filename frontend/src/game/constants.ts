@@ -18,11 +18,11 @@ export const GameConfiguration = {
 
         COLLISION_BOX: {
           OFFSET: {
-            X: -3,
+            X: -2,
             Y: -13,
           },
           SIZE: {
-            WIDTH: 15,
+            WIDTH: 14,
             HEIGHT: 16,
           },
         },

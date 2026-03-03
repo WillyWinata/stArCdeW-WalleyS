@@ -2,17 +2,11 @@ import { GameConfiguration } from "../constants";
 import { InputSystem } from "../manager/InputSystem";
 import { AnimatedSprite } from "../manager/model/animated-sprite";
 import { MonoBehavior } from "../manager/model/mono-behavior";
+import { PlayerStateManager } from "../models/player/state/PlayerStateManager";
 
 export class PlayerRenderer extends MonoBehavior {
-  clone(): MonoBehavior {
-    return new PlayerRenderer();
-  }
-
   private playerAssetConfig = GameConfiguration.GAME.ASSETS.PLAYER;
   private movementConfig = GameConfiguration.GAME.CONTROLS.MOVEMENT;
-
-  private legWalkingSprite = new AnimatedSprite(8);
-  private legIdleSprite = new AnimatedSprite(8);
 
   private bodyUpSprite = new AnimatedSprite(8);
   private bodyDownSprite = new AnimatedSprite(8);
@@ -22,44 +16,38 @@ export class PlayerRenderer extends MonoBehavior {
   private lastDir: string = this.movementConfig.DOWN;
   private dirOwner: string | null = null;
 
-  private state: "idle" | "walk" = "idle";
+  private stateManager!: PlayerStateManager;
 
   constructor() {
     super(1);
   }
 
   async start() {
-    await this.legWalkingSprite.loadFromPublicSequence(
-      this.playerAssetConfig.LEGS.WALK,
-      2,
-    );
+    this.stateManager = PlayerStateManager.getInstance();
 
-    await this.legIdleSprite.loadFromPublicSequence(
-      this.playerAssetConfig.LEGS.IDLE,
-      1,
+    this.bodyUpSprite.loadFromPublicSequence(
+      this.playerAssetConfig.BODY.UP.PATH,
+      this.playerAssetConfig.BODY.UP.FRAME,
     );
-
-    await this.bodyUpSprite.loadFromPublicSequence(
-      this.playerAssetConfig.BODY.UP,
-      1,
+    this.bodyDownSprite.loadFromPublicSequence(
+      this.playerAssetConfig.BODY.DOWN.PATH,
+      this.playerAssetConfig.BODY.DOWN.FRAME,
     );
-
-    await this.bodyDownSprite.loadFromPublicSequence(
-      this.playerAssetConfig.BODY.DOWN,
-      1,
+    this.bodyLeftSprite.loadFromPublicSequence(
+      this.playerAssetConfig.BODY.LEFT.PATH,
+      this.playerAssetConfig.BODY.LEFT.FRAME,
     );
-
-    await this.bodyLeftSprite.loadFromPublicSequence(
-      this.playerAssetConfig.BODY.LEFT,
-      1,
-    );
-
-    await this.bodyRightSprite.loadFromPublicSequence(
-      this.playerAssetConfig.BODY.RIGHT,
-      1,
+    this.bodyRightSprite.loadFromPublicSequence(
+      this.playerAssetConfig.BODY.RIGHT.PATH,
+      this.playerAssetConfig.BODY.RIGHT.FRAME,
     );
     this.gameObject.isLoaded = true;
   }
+
+  clone(): MonoBehavior {
+    return new PlayerRenderer();
+  }
+
   update(dt: number): void {
     const input = InputSystem.getInstance();
 
@@ -68,20 +56,7 @@ export class PlayerRenderer extends MonoBehavior {
     const pressA = input.getKey(this.movementConfig.LEFT);
     const pressD = input.getKey(this.movementConfig.RIGHT);
 
-    const moving = pressW || pressA || pressS || pressD;
-    const nextState: "idle" | "walk" = moving ? "walk" : "idle";
-
-    if (nextState !== this.state) {
-      this.state = nextState;
-      (this.state === "walk"
-        ? this.legWalkingSprite
-        : this.legIdleSprite
-      ).reset();
-    }
-
-    (this.state === "walk" ? this.legWalkingSprite : this.legIdleSprite).update(
-      dt,
-    );
+    this.stateManager.update(dt);
 
     if (input.getKeyDown(this.movementConfig.UP))
       this.dirOwner = this.movementConfig.UP;
@@ -112,30 +87,10 @@ export class PlayerRenderer extends MonoBehavior {
     const baseY = y;
 
     const playerOffset = GameConfiguration.GAME.PLAYER.OFFSET;
-    const legsOffset = { x: playerOffset.LEGS.x, y: playerOffset.LEGS.y };
     const bodyOffset = { x: playerOffset.BODY.x, y: playerOffset.BODY.y };
 
-    const legOffsetX = this.gameObject.transform.scale.x * legsOffset.x;
-    const legOffsetY = this.gameObject.transform.scale.y * legsOffset.y;
     const bodyOffsetX = this.gameObject.transform.scale.x * bodyOffset.x;
     const bodyOffsetY = this.gameObject.transform.scale.y * bodyOffset.y;
-    if (this.state === "walk") {
-      this.legWalkingSprite.draw(
-        ctx,
-        baseX + legOffsetX,
-        baseY + legOffsetY,
-        sx,
-        sy,
-      );
-    } else {
-      this.legIdleSprite.draw(
-        ctx,
-        baseX + legOffsetX,
-        baseY + legOffsetY,
-        sx,
-        sy,
-      );
-    }
 
     if (this.lastDir === this.movementConfig.UP) {
       this.bodyUpSprite.draw(
@@ -170,5 +125,6 @@ export class PlayerRenderer extends MonoBehavior {
         sy,
       );
     }
+    this.stateManager.draw(ctx);
   }
 }

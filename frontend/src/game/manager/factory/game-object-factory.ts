@@ -31,9 +31,6 @@ export class GameObjectFactory {
     gameObject.addScriptsFromPrefab(prefab);
     gameObject.addColliders(finalColliders);
 
-    console.log(
-      `name: ${gameObject.name}, collider: ${gameObject.getColliders().length}`,
-    );
     gameObject.getColliders().forEach((collider) => {
       collider.attach(gameObject);
     });

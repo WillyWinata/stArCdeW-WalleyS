@@ -2,12 +2,10 @@ import { PlayerBaseState } from "./PlayerBaseState";
 import type { PlayerStateManager } from "./PlayerStateManager";
 
 export class PlayerWalkingState extends PlayerBaseState {
-  onEnter(manager: PlayerStateManager): void {
-    throw new Error("Method not implemented.");
-  }
+  onEnter(manager: PlayerStateManager): void {}
 
   onUpdate(manager: PlayerStateManager, dt: number): void {
-    throw new Error("Method not implemented.");
+    manager.getLegWalkingSprite().update(dt);
   }
 
   onDraw(manager: PlayerStateManager, ctx: CanvasRenderingContext2D): void {
@@ -25,7 +23,5 @@ export class PlayerWalkingState extends PlayerBaseState {
       .draw(ctx, baseX + legOffsetX, baseY + legOffsetY, scX, scY);
   }
 
-  onExit(manager: PlayerStateManager): void {
-    throw new Error("Method not implemented.");
-  }
+  onExit(manager: PlayerStateManager): void {}
 }

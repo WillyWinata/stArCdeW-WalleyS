@@ -4,8 +4,8 @@ import { Position } from "../manager/model/transform/position";
 import { Rotation } from "../manager/model/transform/rotation";
 import { Scale } from "../manager/model/transform/scale";
 import { BoxCollider } from "../physics/collider/BoxCollider";
-import { PlayerController } from "../script/player-controller";
-import { PlayerRenderer } from "../script/player-renderer";
+import { PlayerMovementController } from "../script/PlayerMovementController";
+import { PlayerRenderer } from "../script/PlayerRenderer";
 
 export class PlayerPrefab {
   static getPrefab(): Prefab {
@@ -36,7 +36,7 @@ export class PlayerPrefab {
       ),
     );
 
-    prefab.addScript(PlayerController);
+    prefab.addScript(PlayerMovementController);
     prefab.addScript(PlayerRenderer);
 
     return prefab;

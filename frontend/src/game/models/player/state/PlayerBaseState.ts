@@ -1,4 +1,3 @@
-import { MonoBehavior } from "../../../manager/model/mono-behavior";
 import type { PlayerStateManager } from "./PlayerStateManager";
 
 export abstract class PlayerBaseState {

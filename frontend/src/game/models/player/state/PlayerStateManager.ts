@@ -1,17 +1,17 @@
 import { GameConfiguration } from "../../../constants";
 import { AnimatedSprite } from "../../../manager/model/animated-sprite";
 import type { GameObject } from "../../../manager/model/game-object";
-import { PlayerRenderer } from "../PlayerRenderer";
 import { PlayerBaseState } from "./PlayerBaseState";
 import { PlayerIdleState } from "./PlayerIdleState";
 import { PlayerWalkingState } from "./PlayerWalkingState";
 
 export class PlayerStateManager {
+  private static instance: PlayerStateManager;
   private currentState: PlayerBaseState;
-  private renderer: PlayerRenderer = new PlayerRenderer();
+
   private asset = GameConfiguration.GAME.ASSETS.PLAYER.LEGS;
   private offset = GameConfiguration.GAME.PLAYER.OFFSET;
-  private playerObject: GameObject;
+  private playerObject!: GameObject;
 
   private idleState: PlayerIdleState = new PlayerIdleState();
   private walkingState: PlayerWalkingState = new PlayerWalkingState();
@@ -19,9 +19,7 @@ export class PlayerStateManager {
   private legWalkingSprite = new AnimatedSprite(8);
   private legIdleSprite = new AnimatedSprite(8);
 
-  constructor(object: GameObject) {
-    this.playerObject = object;
-
+  private constructor() {
     this.legWalkingSprite.loadFromPublicSequence(
       this.asset.WALK.PATH,
       this.asset.WALK.FRAME,
@@ -36,6 +34,16 @@ export class PlayerStateManager {
     this.currentState.onEnter(this);
   }
 
+  static getInstance(): PlayerStateManager {
+    if (this.instance == null) {
+      this.instance = new PlayerStateManager();
+    }
+    return this.instance;
+  }
+
+  setGameObject(obj: GameObject) {
+    this.playerObject = obj;
+  }
   switchState(state: PlayerBaseState) {
     this.currentState.onExit(this);
     this.currentState = state;
@@ -44,6 +52,10 @@ export class PlayerStateManager {
 
   update(dt: number) {
     this.currentState.onUpdate(this, dt);
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    this.currentState.onDraw(this, ctx);
   }
 
   public getIdleState(): PlayerIdleState {
@@ -67,10 +79,9 @@ export class PlayerStateManager {
   }
 
   public getPlayerObject(): GameObject {
+    if (this.playerObject == null) {
+      throw new Error("Player Object Not Assigned!");
+    }
     return this.playerObject;
-  }
-
-  public getRenderer(): PlayerRenderer {
-    return this.renderer;
   }
 }
