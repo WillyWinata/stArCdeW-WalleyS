@@ -28,13 +28,8 @@ export class GameObjectFactory {
     const gameObject = new GameObject({
       name: finalName,
       transform: transform,
-    });
-
-    gameObject.addScriptsFromPrefab(prefab);
-    gameObject.addColliders(finalColliders);
-
-    gameObject.getColliders().forEach((collider) => {
-      collider.attach(gameObject);
+      prefab : prefab,
+      colliders: finalColliders,
     });
 
     return gameObject;

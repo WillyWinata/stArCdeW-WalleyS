@@ -12,13 +12,12 @@ type Dimension = {
   maxY: number;
 };
 export class MapPrefab extends Prefab {
+
   constructor(name: string, rotation: Rotation, scale: Scale) {
     super(name, rotation, scale);
-    this.initializePrefab();
   }
 
-  initializePrefab(): void {
-    this.addScript(MapInit);
+  initializeColliders(): void {
     this.addCollider(
       new MapCollider(
         new Position(0, 0),
@@ -40,7 +39,10 @@ export class MapPrefab extends Prefab {
     );
   }
 
-  
+  initializeScripts(): void {
+    this.addScript(MapInit);
+  }
+
   private addColliderBlob(...dimensions: Dimension[]): Position[] {
     let positions: Position[] = [];
     dimensions.forEach((dimension) => {

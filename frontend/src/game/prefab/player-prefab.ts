@@ -11,10 +11,9 @@ export class PlayerPrefab extends Prefab {
 
   constructor(name: string, rotation: Rotation, scale: Scale) {
     super(name, rotation, scale);
-    this.initializePrefab();
   }
 
-  initializePrefab(): void {
+  initializeColliders(): void {
     const playerCollider = GameConfiguration.GAME.COLLIDER.PLAYER;
     this.addCollider(
       new BoxCollider(
@@ -39,8 +38,11 @@ export class PlayerPrefab extends Prefab {
         { debugColor: "purple", isTrigger: true },
       ),
     );
+  }
 
+  initializeScripts(): void {
     this.addScript(PlayerMovementController);
     this.addScript(PlayerRenderer);
   }
+
 }

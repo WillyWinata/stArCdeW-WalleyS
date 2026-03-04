@@ -11,8 +11,6 @@ export abstract class Prefab {
   rotation: Rotation;
   scale: Scale;
 
-  // megaBox : BoundingBox;
-
   private scriptTypes: Array<new () => MonoBehavior> = [];
   private colliders: Collider[] = [];
 
@@ -22,9 +20,18 @@ export abstract class Prefab {
     this.id = crypto.randomUUID();
     this.name = name;
 
+    this.initializePrefab();
+
+    console.log(`Prefab ${this.name} initialized with ${this.colliders.length} colliders.`);
   }
 
-  abstract initializePrefab() : void;
+  abstract initializeColliders() : void;
+  abstract initializeScripts() : void;
+
+  protected initializePrefab(): void {
+    this.initializeColliders();
+    this.initializeScripts();
+  }
 
   addScript(type: new () => MonoBehavior) {
     this.scriptTypes.push(type);
@@ -47,5 +54,4 @@ export abstract class Prefab {
     return this.colliders;
   }
 
-  
 }

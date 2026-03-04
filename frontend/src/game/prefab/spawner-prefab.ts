@@ -5,13 +5,15 @@ import { Spawner } from "../script/spawner";
 import { PrefabFactory } from "./PrefabFactory";
 
 export class SpawnerPrefab extends Prefab {
-
+  
   constructor(name: string, rotation: Rotation, scale: Scale) {
     super(name, rotation, scale);
-    this.initializePrefab();
   }
 
-  initializePrefab(): void {
+  initializeColliders(): void {
+    // No colliders
+  }
+  initializeScripts(): void {
     this.addScript(Spawner);
   }
 
