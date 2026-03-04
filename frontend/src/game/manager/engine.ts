@@ -1,4 +1,5 @@
 import type { Collider } from "../physics/collider/Collider";
+import { PhysicsEngine } from "../physics/PhysicsEngine";
 import { MainScene } from "../scene/main-scene";
 import { GameObjectFactory } from "./factory/game-object-factory";
 import { InputSystem } from "./InputSystem";
@@ -12,15 +13,17 @@ import type { Scale } from "./model/transform/scale";
 
 export class Engine {
   private static instance: Engine;
+  private physicsEngine: PhysicsEngine;
   private activeScene: Scene;
   private scriptList: MonoBehavior[] = [];
-  private colliderList: Collider[] = [];
+  
 
   private ctx!: CanvasRenderingContext2D;
   private lastTime = 0;
   private running = false;
 
   private constructor() {
+    this.physicsEngine = new PhysicsEngine();
     this.activeScene = MainScene.getScene();
     this.scriptList = this.activeScene
       .getGameObjects()
@@ -64,10 +67,8 @@ export class Engine {
       script.start?.();
     });
 
-    this.colliderList = this.activeScene
-      .getGameObjects()
-      .flatMap((go) => go.getColliders());
-    console.log(`size: ${this.colliderList.length}`);
+    this.physicsEngine.registerAllCollidersInScene(this.getActiveScene());
+    
     this.lastTime = performance.now();
     requestAnimationFrame(this.loop);
   }
@@ -85,11 +86,7 @@ export class Engine {
         script.draw(ctx);
       }
     });
-    this.colliderList.forEach((collider) => {
-      if (collider.gameObject?.isLoaded) {
-        collider.drawDebugLines(ctx);
-      }
-    });
+    this.physicsEngine.drawAllCollidersDebugLines(ctx);
   }
 
   registerScripts(scripts: MonoBehavior[]) {
@@ -104,19 +101,6 @@ export class Engine {
       }
 
       this.scriptList.splice(l, 0, script);
-    });
-  }
-
-  registerColliders(colliders: Collider[]) {
-    this.colliderList.push(...colliders);
-  }
-
-  unregisterColliders(colliders: Collider[]) {
-    colliders.forEach((collider) => {
-      const idx = this.colliderList.indexOf(collider);
-      if (idx !== -1) {
-        this.colliderList.splice(idx, 1);
-      }
     });
   }
 
@@ -143,7 +127,7 @@ export class Engine {
     this.activeScene.addGameObject(go);
 
     this.registerScripts(go.getScripts());
-    this.registerColliders(go.getColliders());
+    this.physicsEngine.registerColliders(go.getColliders());
     go.getScripts().forEach((script) => {
       script.start?.();
     });
@@ -153,7 +137,7 @@ export class Engine {
 
   despawn(go: GameObject) {
     this.unregisterScript(go.getScripts());
-    this.unregisterColliders(go.getColliders());
+    this.physicsEngine.unregisterColliders(go.getColliders());
     this.activeScene.removeGameObject(go);
   }
 
