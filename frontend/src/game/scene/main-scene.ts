@@ -1,7 +1,10 @@
 import { GameObjectFactory } from "../manager/factory/game-object-factory";
 import { Scene } from "../manager/model/scene";
 import { Position } from "../manager/model/transform/position";
+import { Rotation } from "../manager/model/transform/rotation";
+import { Scale } from "../manager/model/transform/scale";
 import { MapPrefab } from "../prefab/map-prefab";
+import { PrefabFactory } from "../prefab/PrefabFactory";
 import { MapInit } from "../script/map_init";
 
 export class MainScene {
@@ -9,7 +12,7 @@ export class MainScene {
     const scene = new Scene("MainScene");
 
     const map = GameObjectFactory.Instantiate(
-      MapPrefab.getPrefab(),
+      PrefabFactory.getPrefab(MapPrefab, "Map", new Rotation(0), new Scale(3, 3)),
       new Position(0, 0),
     );
 

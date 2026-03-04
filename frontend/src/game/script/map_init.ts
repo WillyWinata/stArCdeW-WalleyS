@@ -4,6 +4,7 @@ import { MapParser } from "../util/map-parser";
 import { Engine } from "../manager/engine";
 import { PlayerPrefab } from "../prefab/player-prefab";
 import { Position } from "../manager/model/transform/position";
+import { PrefabFactory } from "../prefab/PrefabFactory";
 
 export class MapInit extends MonoBehavior {
   clone(): MonoBehavior {
@@ -51,7 +52,7 @@ export class MapInit extends MonoBehavior {
     this.gameObject.transform.position.x = this.originX;
     this.gameObject.transform.position.y = this.originY;
 
-    engine.spawn(PlayerPrefab.getPrefab(), new Position(width / 2, height / 2));
+    engine.spawn(PrefabFactory.getPrefab(PlayerPrefab), new Position(width / 2, height / 2));
     this.loaded = true;
     this.gameObject.isLoaded = true;
   }

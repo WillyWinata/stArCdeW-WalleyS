@@ -22,6 +22,8 @@ export class GameObjectFactory {
     const finalRotation = options?.rotation ?? prefab.rotation;
     const finalColliders = options?.colliders ?? prefab.getColliders();
 
+    console.log(`Number of colliders in ${prefab.name} prefab: ${finalColliders.length}`);
+
     const transform = new Transform(position, finalScale, finalRotation);
     const gameObject = new GameObject({
       name: finalName,

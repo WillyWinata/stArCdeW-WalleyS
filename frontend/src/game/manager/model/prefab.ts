@@ -1,14 +1,17 @@
 import type { Collider } from "../../physics/collider/Collider";
+import type { BoundingBox } from "../../types";
 import type { MonoBehavior } from "./mono-behavior";
 import type { Rotation } from "./transform/rotation";
 import type { Scale } from "./transform/scale";
 
-export class Prefab {
+export abstract class Prefab {
   id: string;
   name: string;
 
   rotation: Rotation;
   scale: Scale;
+
+  // megaBox : BoundingBox;
 
   private scriptTypes: Array<new () => MonoBehavior> = [];
   private colliders: Collider[] = [];
@@ -18,7 +21,10 @@ export class Prefab {
     this.scale = scale;
     this.id = crypto.randomUUID();
     this.name = name;
+
   }
+
+  abstract initializePrefab() : void;
 
   addScript(type: new () => MonoBehavior) {
     this.scriptTypes.push(type);
@@ -36,7 +42,10 @@ export class Prefab {
   addCollider(collider: Collider) {
     this.colliders.push(collider);
   }
+
   getColliders() {
     return this.colliders;
   }
+
+  
 }

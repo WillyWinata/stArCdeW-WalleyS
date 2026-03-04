@@ -77,6 +77,13 @@ export class Engine {
     this.scriptList.forEach((script) => {
       script.update(dt);
     });
+    this.physicsEngine.physicsUpdate(dt);
+    
+    // debug
+    const gos : GameObject = this.activeScene
+      .getGameObjects().filter((go) => go.name === "Map")[0];
+      console.log(`Number of collision: ${gos.getColliders().length}`)
+    // console.log(`Number of game object named Map: ${gos.length}`)
   }
 
   draw(ctx: CanvasRenderingContext2D) {

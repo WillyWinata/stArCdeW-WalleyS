@@ -7,12 +7,16 @@ import { BoxCollider } from "../physics/collider/BoxCollider";
 import { PlayerMovementController } from "../script/PlayerMovementController";
 import { PlayerRenderer } from "../script/PlayerRenderer";
 
-export class PlayerPrefab {
-  static getPrefab(): Prefab {
-    const prefab = new Prefab("Player", new Rotation(0), new Scale(3, 3));
+export class PlayerPrefab extends Prefab {
 
+  constructor(name: string, rotation: Rotation, scale: Scale) {
+    super(name, rotation, scale);
+    this.initializePrefab();
+  }
+
+  initializePrefab(): void {
     const playerCollider = GameConfiguration.GAME.COLLIDER.PLAYER;
-    prefab.addCollider(
+    this.addCollider(
       new BoxCollider(
         playerCollider.HURT_BOX.SIZE.WIDTH,
         playerCollider.HURT_BOX.SIZE.HEIGHT,
@@ -24,7 +28,7 @@ export class PlayerPrefab {
       ),
     );
 
-    prefab.addCollider(
+    this.addCollider(
       new BoxCollider(
         playerCollider.COLLISION_BOX.SIZE.WIDTH,
         playerCollider.COLLISION_BOX.SIZE.HEIGHT,
@@ -36,9 +40,7 @@ export class PlayerPrefab {
       ),
     );
 
-    prefab.addScript(PlayerMovementController);
-    prefab.addScript(PlayerRenderer);
-
-    return prefab;
+    this.addScript(PlayerMovementController);
+    this.addScript(PlayerRenderer);
   }
 }

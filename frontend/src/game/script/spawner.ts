@@ -2,7 +2,10 @@ import { Engine } from "../manager/engine";
 import { InputSystem } from "../manager/InputSystem";
 import { MonoBehavior } from "../manager/model/mono-behavior";
 import { Position } from "../manager/model/transform/position";
+import { Rotation } from "../manager/model/transform/rotation";
+import { Scale } from "../manager/model/transform/scale";
 import { PlayerPrefab } from "../prefab/player-prefab";
+import { PrefabFactory } from "../prefab/PrefabFactory";
 
 export class Spawner extends MonoBehavior {
   constructor() {
@@ -21,7 +24,7 @@ export class Spawner extends MonoBehavior {
     if (InputSystem.getInstance().getKeyDown("e")) {
       console.log("Spawn!");
       const width = Engine.getInstance().getContext().canvas.width;
-      Engine.getInstance().spawn(PlayerPrefab.getPrefab(), new Position(0, 0));
+      Engine.getInstance().spawn(PrefabFactory.getPrefab(PlayerPrefab), new Position(0, 0));
     }
   }
 }

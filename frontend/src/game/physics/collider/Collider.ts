@@ -1,10 +1,12 @@
 import { GameConfiguration } from "../../constants";
 import type { GameObject } from "../../manager/model/game-object";
 import type { Position } from "../../manager/model/transform/position";
+import type { BoundingBox } from "../../types";
 
 export abstract class Collider {
   public gameObject?: GameObject;
 
+  public tag : string = "";
   public offset: Position;
   public isTrigger: boolean;
   public debugColor: string;
@@ -23,6 +25,10 @@ export abstract class Collider {
     this.gameObject = gameObject;
     return this;
   }
+
+  public abstract getWorldBox(): BoundingBox | BoundingBox[];
+
+  public onCollisionEnter(other: Collider): void {}
 
   public drawDebugLines(canvas: CanvasRenderingContext2D): void {
     if (!GameConfiguration.GAME.COLLIDER.DEBUG_MODE) return;

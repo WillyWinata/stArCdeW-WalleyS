@@ -11,22 +11,15 @@ type Dimension = {
   minY: number;
   maxY: number;
 };
-export class MapPrefab {
-  private static addColliderBlob(...dimensions: Dimension[]): Position[] {
-    let positions: Position[] = [];
-    dimensions.forEach((dimension) => {
-      for (let i = dimension.minX; i <= dimension.maxX; i++) {
-        for (let j = dimension.minY; j <= dimension.maxY; j++) {
-          positions.push(new Position(i, j));
-        }
-      }
-    });
-    return positions;
+export class MapPrefab extends Prefab {
+  constructor(name: string, rotation: Rotation, scale: Scale) {
+    super(name, rotation, scale);
+    this.initializePrefab();
   }
-  static getPrefab(): Prefab {
-    const prefab = new Prefab("Map", new Rotation(0), new Scale(3, 3));
-    prefab.addScript(MapInit);
-    prefab.addCollider(
+
+  initializePrefab(): void {
+    this.addScript(MapInit);
+    this.addCollider(
       new MapCollider(
         new Position(0, 0),
         16,
@@ -45,6 +38,19 @@ export class MapPrefab {
         },
       ),
     );
-    return prefab;
   }
+
+  
+  private addColliderBlob(...dimensions: Dimension[]): Position[] {
+    let positions: Position[] = [];
+    dimensions.forEach((dimension) => {
+      for (let i = dimension.minX; i <= dimension.maxX; i++) {
+        for (let j = dimension.minY; j <= dimension.maxY; j++) {
+          positions.push(new Position(i, j));
+        }
+      }
+    });
+    return positions;
+  }
+
 }

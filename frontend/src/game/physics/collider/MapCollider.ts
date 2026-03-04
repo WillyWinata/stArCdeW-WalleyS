@@ -1,5 +1,5 @@
 import { Position } from "../../manager/model/transform/position";
-import { BoxCollider } from "./BoxCollider";
+import type { BoundingBox } from "../../types";
 import { Collider } from "./Collider";
 
 export class MapCollider extends Collider {
@@ -22,12 +22,14 @@ export class MapCollider extends Collider {
     this.positionList = positionList;
   }
 
-  public getWorldBox(tilePos: Position): {
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-  } {
+  public getWorldBox(): BoundingBox | BoundingBox[] {
+    const worldBoxList: BoundingBox[] = this.positionList.map((position) => {
+      return this.getWorldBoxByTilePosition(position);
+    });
+    return worldBoxList;
+  }
+
+  public getWorldBoxByTilePosition(tilePos: Position): BoundingBox {
     if (!this.gameObject) {
       throw new Error("Game object not found");
     }
@@ -50,11 +52,11 @@ export class MapCollider extends Collider {
   }
 
   protected debugLines(ctx: CanvasRenderingContext2D): void {
-    const { x, y, w, h } = this.getWorldBox(this.positionList[0]);
+    const { x, y, w, h } = this.getWorldBoxByTilePosition(this.positionList[0]);
 
     this.positionList.forEach((position) => {
       ctx.strokeStyle = this.debugColor;
-      const { x, y, w, h } = this.getWorldBox(position);
+      const { x, y, w, h } = this.getWorldBoxByTilePosition(position);
       ctx.strokeRect(x, y, w, h);
     });
   }

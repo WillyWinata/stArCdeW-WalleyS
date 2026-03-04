@@ -1,4 +1,5 @@
 import type { Position } from "../../manager/model/transform/position";
+import type { BoundingBox } from "../../types";
 import { Collider } from "./Collider";
 
 export class BoxCollider extends Collider {
@@ -20,7 +21,7 @@ export class BoxCollider extends Collider {
     this.height = height;
   }
 
-  public getWorldBox(): { x: number; y: number; w: number; h: number } {
+  public getWorldBox(): BoundingBox {
     if (!this.gameObject) {
       throw new Error("Game object not found");
     }
@@ -40,7 +41,7 @@ export class BoxCollider extends Collider {
     ctx.strokeStyle = this.debugColor;
 
     const { x, y, w, h } = this.getWorldBox();
-
+    ctx.strokeText(`Nigger`, x, y);
     ctx.strokeRect(x, y, w, h);
   }
 }
