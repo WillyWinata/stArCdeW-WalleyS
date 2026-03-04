@@ -1,4 +1,5 @@
 import { Prefab } from "../manager/model/prefab";
+import type { Position } from "../manager/model/transform/position";
 import { Rotation } from "../manager/model/transform/rotation";
 import { Scale } from "../manager/model/transform/scale";
 import { Spawner } from "../script/spawner";

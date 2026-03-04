@@ -2,6 +2,7 @@ import type { Collider } from "../../physics/collider/Collider";
 import type { BoundingBox } from "../../types";
 import { MonoBehavior } from "./mono-behavior";
 import { Prefab } from "./prefab";
+import type { Position } from "./transform/position";
 import type { Transform } from "./transform/transform";
 
 type Ctor<T> = new (...args: any[]) => T;
@@ -11,6 +12,7 @@ interface GameObjectContext {
   transform: Transform;
   prefab: Prefab;
   colliders: Collider[];
+  collisionBoundsOffset: Position;
 }
 
 export class GameObject {
@@ -19,7 +21,8 @@ export class GameObject {
   transform: Transform;
   isLoaded: boolean;
 
-  private colliderBounds : BoundingBox;
+  private colliderBoundsSize: { w: number; h: number };
+  private collisionBoundsOffset: Position;
 
   private colliders: Collider[] = [];
 
@@ -30,11 +33,12 @@ export class GameObject {
     this.name = context.name;
     this.transform = context.transform;
     this.isLoaded = false;
+    this.collisionBoundsOffset = context.collisionBoundsOffset;
 
     const { prefab, colliders } = context;
     this.initializeGameObject(prefab, colliders);
-    
-    this.colliderBounds = this.calculateColliderBounds();
+
+    this.colliderBoundsSize = this.calculateColliderBoundsSize();
   }
 
   initializeGameObject(prefab: Prefab, colliders: Collider[]) {
@@ -78,8 +82,17 @@ export class GameObject {
     return this.colliders;
   }
 
-  calculateColliderBounds(): BoundingBox {
-    if (this.colliders.length === 0) return { x: 0, y: 0, w: 0, h: 0 };
+  getColliderBounds(): BoundingBox {
+    return {
+      x: this.transform.position.x + this.collisionBoundsOffset.x * this.transform.scale.x,
+      y: this.transform.position.y + this.collisionBoundsOffset.y * this.transform.scale.y,
+      w: this.colliderBoundsSize.w,
+      h: this.colliderBoundsSize.h
+    };
+  }
+
+  private calculateColliderBoundsSize(): { w: number; h: number } {
+    if (this.colliders.length === 0) return { w: 0, h: 0 };
 
     let minX = Infinity;
     let minY = Infinity;
@@ -87,23 +100,20 @@ export class GameObject {
     let maxY = -Infinity;
 
     for (const collider of this.colliders) {
-        const box =  collider.getWorldBox();
+      const box = collider.getWorldBox();
+      const boxList = Array.isArray(box) ? box : [box];
 
-        const boxList = Array.isArray(box) ? box : [box];
-        
-        for(const b of boxList){
-          if (b.x < minX) minX = b.x;
-          if (b.y < minY) minY = b.y;
-          if (b.x + b.w > maxX) maxX = b.x + b.w;
-          if (b.y + b.h > maxY) maxY = b.y + b.h;
-        }
+      for (const b of boxList) {
+        if (b.x < minX) minX = b.x;
+        if (b.y < minY) minY = b.y;
+        if (b.x + b.w > maxX) maxX = b.x + b.w;
+        if (b.y + b.h > maxY) maxY = b.y + b.h;
+      }
     }
 
     return {
-        x: minX,
-        y: minY,
-        w: maxX - minX,
-        h: maxY - minY
+      w: maxX - minX,
+      h: maxY - minY
     };
   }
 

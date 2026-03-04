@@ -37,4 +37,15 @@ export abstract class Collider {
   }
 
   protected abstract debugLines(ctx: CanvasRenderingContext2D): void;
+
+  public debugColliderBoundsLines(ctx: CanvasRenderingContext2D): void {
+    if (!GameConfiguration.GAME.COLLIDER.DEBUG_MODE) return;
+    if(!this.gameObject) return;
+    
+    ctx.strokeStyle = "red";
+
+    const { x, y, w, h } = this.gameObject.getColliderBounds();
+    ctx.strokeText(`B`, x, y);
+    ctx.strokeRect(x, y, w, h);
+  }
 }

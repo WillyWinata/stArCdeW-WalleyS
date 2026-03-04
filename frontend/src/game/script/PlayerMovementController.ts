@@ -17,7 +17,17 @@ export class PlayerMovementController extends MonoBehavior {
     this.inputSystem = InputSystem.getInstance();
     this.playerStateManager = PlayerStateManager.getInstance();
     this.playerStateManager.setGameObject(this.gameObject);
+
+    this.gameObject.getColliders().forEach((col) => {
+      col.onCollisionEnter = (other) => {
+        console.log("Collided with ", other.gameObject?.name);
+        this.gameObject.transform.position.x -= this.speed * 0.016; 
+        this.gameObject.transform.position.y -= this.speed * 0.016; 
+      };
+    });
+
   }
+
   clone(): MonoBehavior {
     return new PlayerMovementController();
   }

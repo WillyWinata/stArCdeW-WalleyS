@@ -82,8 +82,6 @@ export class Engine {
     // debug
     const gos : GameObject = this.activeScene
       .getGameObjects().filter((go) => go.name === "Map")[0];
-      console.log(`Number of collision: ${gos.getColliders().length}`)
-    // console.log(`Number of game object named Map: ${gos.length}`)
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -94,6 +92,7 @@ export class Engine {
       }
     });
     this.physicsEngine.drawAllCollidersDebugLines(ctx);
+    this.physicsEngine.drawAllCollidersBoundsDebugLines(ctx, this.activeScene.getGameObjects());
   }
 
   registerScripts(scripts: MonoBehavior[]) {

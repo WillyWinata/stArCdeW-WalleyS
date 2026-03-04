@@ -15,12 +15,14 @@ export class GameObjectFactory {
       rotation?: Rotation;
       scale?: Scale;
       colliders?: Collider[];
+      collisionBoundsOffset?: Position;
     },
   ): GameObject {
     const finalName = options?.name ?? prefab.name;
     const finalScale = options?.scale ?? prefab.scale;
     const finalRotation = options?.rotation ?? prefab.rotation;
     const finalColliders = options?.colliders ?? prefab.getColliders();
+    const finalCollisionBoundsOffset = options?.collisionBoundsOffset ?? prefab.collisionBoundsOffset;
 
     console.log(`Number of colliders in ${prefab.name} prefab: ${finalColliders.length}`);
 
@@ -30,6 +32,7 @@ export class GameObjectFactory {
       transform: transform,
       prefab : prefab,
       colliders: finalColliders,
+      collisionBoundsOffset: finalCollisionBoundsOffset,
     });
 
     return gameObject;

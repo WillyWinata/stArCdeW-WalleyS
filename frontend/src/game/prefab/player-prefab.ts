@@ -15,6 +15,14 @@ export class PlayerPrefab extends Prefab {
 
   initializeColliders(): void {
     const playerCollider = GameConfiguration.GAME.COLLIDER.PLAYER;
+
+    const playerCollisionBoxOffset = new Position(
+      playerCollider.COLLISION_BOX.OFFSET.X,
+      playerCollider.COLLISION_BOX.OFFSET.Y,
+    );
+
+    this.setCollisionBoundsOffset(playerCollisionBoxOffset);
+
     this.addCollider(
       new BoxCollider(
         playerCollider.HURT_BOX.SIZE.WIDTH,
@@ -31,10 +39,7 @@ export class PlayerPrefab extends Prefab {
       new BoxCollider(
         playerCollider.COLLISION_BOX.SIZE.WIDTH,
         playerCollider.COLLISION_BOX.SIZE.HEIGHT,
-        new Position(
-          playerCollider.COLLISION_BOX.OFFSET.X,
-          playerCollider.COLLISION_BOX.OFFSET.Y,
-        ),
+        playerCollisionBoxOffset,
         { debugColor: "purple", isTrigger: true },
       ),
     );

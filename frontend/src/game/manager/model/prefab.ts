@@ -1,6 +1,7 @@
 import type { Collider } from "../../physics/collider/Collider";
 import type { BoundingBox } from "../../types";
 import type { MonoBehavior } from "./mono-behavior";
+import type { Position } from "./transform/position";
 import type { Rotation } from "./transform/rotation";
 import type { Scale } from "./transform/scale";
 
@@ -10,19 +11,20 @@ export abstract class Prefab {
 
   rotation: Rotation;
   scale: Scale;
+  
+  collisionBoundsOffset: Position;
 
   private scriptTypes: Array<new () => MonoBehavior> = [];
   private colliders: Collider[] = [];
 
-  constructor(name: string, rotation: Rotation, scale: Scale) {
+  constructor(name: string, rotation: Rotation, scale: Scale, collisionBoundsOffset: Position = { x: 0, y: 0 }) {
     this.rotation = rotation;
     this.scale = scale;
+    this.collisionBoundsOffset = collisionBoundsOffset;
     this.id = crypto.randomUUID();
     this.name = name;
 
     this.initializePrefab();
-
-    console.log(`Prefab ${this.name} initialized with ${this.colliders.length} colliders.`);
   }
 
   abstract initializeColliders() : void;
@@ -52,6 +54,10 @@ export abstract class Prefab {
 
   getColliders() {
     return this.colliders;
+  }
+
+  setCollisionBoundsOffset(offset: Position) {
+    this.collisionBoundsOffset = offset;
   }
 
 }

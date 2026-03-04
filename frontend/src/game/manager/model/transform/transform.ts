@@ -6,10 +6,13 @@ export class Transform {
   position: Position;
   scale: Scale;
   rotation: Rotation;
-  constructor(position: Position, scale: Scale, rotation: Rotation) {
+  offset?: Position;
+
+  constructor(position: Position, scale: Scale, rotation: Rotation, offset?: Position) {
     this.position = position;
     this.scale = scale;
     this.rotation = rotation;
+    this.offset = offset;
   }
 }
 

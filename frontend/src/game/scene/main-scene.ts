@@ -12,7 +12,7 @@ export class MainScene {
     const scene = new Scene("MainScene");
 
     const map = GameObjectFactory.Instantiate(
-      PrefabFactory.getPrefab(MapPrefab, "Map", new Rotation(0), new Scale(3, 3)),
+      PrefabFactory.getPrefab(MapPrefab),
       new Position(0, 0),
     );
 
