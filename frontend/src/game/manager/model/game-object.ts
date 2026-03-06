@@ -148,4 +148,12 @@ export class GameObject {
     this.pastTransform.position.x = this.transform.position.x;
     this.pastTransform.position.y = this.transform.position.y;
   }
+  public getColliderBoundsAt(position: Position): BoundingBox {
+    return {
+      x: position.x + this.collisionBoundsOffset.x * this.transform.scale.x,
+      y: position.y + this.collisionBoundsOffset.y * this.transform.scale.y,
+      w: this.colliderBoundsSize.w,
+      h: this.colliderBoundsSize.h,
+    };
+  }
 }

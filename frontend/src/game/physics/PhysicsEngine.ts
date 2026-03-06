@@ -1,5 +1,6 @@
 import type { GameObject } from "../manager/model/game-object";
 import type { Scene } from "../manager/model/scene";
+import { SceneManager } from "../manager/SceneManager";
 import type { BoundingBox } from "../types";
 import type { Collider } from "./collider/Collider";
 
@@ -15,6 +16,7 @@ type CollisionInfo = {
 export class PhysicsEngine {
   private colliderList: Collider[] = [];
 
+  constructor(private sceneManager: SceneManager) {}
   registerAllCollidersInScene(scene: Scene) {
     this.colliderList = scene
       .getGameObjects()
@@ -39,8 +41,23 @@ export class PhysicsEngine {
     });
   }
 
+  private getFuturePosition(gameObject: GameObject, dt: number) {
+    return {
+      x: gameObject.transform.position.x + gameObject.physic.speed.x * dt,
+      y: gameObject.transform.position.y + gameObject.physic.speed.y * dt,
+    };
+  }
+
   physicsUpdate(dt: number) {
-    this.checkCollision();
+    this.sceneManager
+      .getActiveScene()
+      .getGameObjects()
+      .forEach((go) => {
+        go.calculateSpeed(dt);
+        go.updatePastTransformPosition();
+      });
+
+    this.checkCollision(dt);
   }
 
   private getSeparationVector(
@@ -104,6 +121,8 @@ export class PhysicsEngine {
   private getCollisionInfo(
     colA: Collider,
     colB: Collider,
+    futurePosA: { x: number; y: number },
+    futurePosB: { x: number; y: number },
   ): {
     gameObjectA: GameObject;
     gameObjectB: GameObject;
@@ -112,15 +131,15 @@ export class PhysicsEngine {
   } | null {
     if (!colA.gameObject || !colB.gameObject) return null;
 
-    const broadA = colA.gameObject.getColliderBounds();
-    const broadB = colB.gameObject.getColliderBounds();
+    const broadA = colA.gameObject.getColliderBoundsAt(futurePosA);
+    const broadB = colB.gameObject.getColliderBoundsAt(futurePosB);
 
     if (!this.checkAABBCollision(broadA, broadB)) {
       return null;
     }
 
-    const rawBoxA = colA.getWorldBox();
-    const rawBoxB = colB.getWorldBox();
+    const rawBoxA = colA.getWorldBoxAt(futurePosA);
+    const rawBoxB = colB.getWorldBoxAt(futurePosB);
 
     const boxAList = Array.isArray(rawBoxA) ? rawBoxA : [rawBoxA];
     const boxBList = Array.isArray(rawBoxB) ? rawBoxB : [rawBoxB];
@@ -140,7 +159,8 @@ export class PhysicsEngine {
 
     return null;
   }
-  checkCollision() {
+
+  checkCollision(dt: number) {
     const collisionsByObject = new Map<string, CollisionInfo[]>();
 
     for (let i = 0; i < this.colliderList.length; i++) {
@@ -152,7 +172,30 @@ export class PhysicsEngine {
         if (colA.gameObject?.id === colB.gameObject?.id) continue;
         if (!colA.gameObject || !colB.gameObject) continue;
 
-        const collision = this.getCollisionInfo(colA, colB);
+        const futurePosA = {
+          x:
+            colA.gameObject.transform.position.x +
+            colA.gameObject.physic.speed.x * dt,
+          y:
+            colA.gameObject.transform.position.y +
+            colA.gameObject.physic.speed.y * dt,
+        };
+
+        const futurePosB = {
+          x:
+            colB.gameObject.transform.position.x +
+            colB.gameObject.physic.speed.x * dt,
+          y:
+            colB.gameObject.transform.position.y +
+            colB.gameObject.physic.speed.y * dt,
+        };
+
+        const collision = this.getCollisionInfo(
+          colA,
+          colB,
+          futurePosA,
+          futurePosB,
+        );
         if (!collision) continue;
 
         const { gameObjectA, gameObjectB, boxA, boxB } = collision;

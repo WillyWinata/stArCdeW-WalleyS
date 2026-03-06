@@ -1,33 +1,29 @@
-import type { Collider } from "../physics/collider/Collider";
 import { PhysicsEngine } from "../physics/PhysicsEngine";
-import { MainScene } from "../scene/main-scene";
 import { GameObjectFactory } from "./factory/game-object-factory";
-import { InputSystem } from "./InputSystem";
+import { InputSystem } from "./input-system";
 import type { GameObject } from "./model/game-object";
-import type { MonoBehavior } from "./model/mono-behavior";
 import type { Prefab } from "./model/prefab";
-import type { Scene } from "./model/scene";
 import type { Position } from "./model/transform/position";
 import type { Rotation } from "./model/transform/rotation";
 import type { Scale } from "./model/transform/scale";
+import { SceneManager } from "./SceneManager";
+import { ScriptManager } from "./ScriptManager";
 
 export class Engine {
   private static instance: Engine;
   private physicsEngine: PhysicsEngine;
-  private activeScene: Scene;
-  private scriptList: MonoBehavior[] = [];
+  private scriptManager: ScriptManager;
+  private sceneManager: SceneManager;
 
   private ctx!: CanvasRenderingContext2D;
   private lastTime = 0;
   private running = false;
 
   private constructor() {
-    this.physicsEngine = new PhysicsEngine();
-    this.activeScene = MainScene.getScene();
-    this.scriptList = this.activeScene
-      .getGameObjects()
-      .flatMap((go) => go.getScripts())
-      .sort((a, b) => a.order - b.order);
+    this.sceneManager = new SceneManager();
+    this.physicsEngine = new PhysicsEngine(this.sceneManager);
+    this.scriptManager = new ScriptManager();
+    this.scriptManager.registerScripts(this.sceneManager.getActiveScene());
   }
 
   static getInstance(): Engine {
@@ -35,10 +31,6 @@ export class Engine {
       Engine.instance = new Engine();
     }
     return Engine.instance;
-  }
-
-  getActiveScene(): Scene {
-    return this.activeScene;
   }
 
   private loop = (now: number) => {
@@ -62,66 +54,30 @@ export class Engine {
     this.running = true;
 
     //Run the Start Method before the first Frame of the Scene
-    this.scriptList.forEach((script) => {
-      script.start?.();
-    });
+    this.scriptManager.startScripts();
 
-    this.physicsEngine.registerAllCollidersInScene(this.getActiveScene());
+    this.physicsEngine.registerAllCollidersInScene(
+      this.sceneManager.getActiveScene(),
+    );
 
     this.lastTime = performance.now();
     requestAnimationFrame(this.loop);
   }
 
   update(dt: number) {
-    this.scriptList.forEach((script) => {
-      script.update(dt);
-    });
-    this.physicsEngine.physicsUpdate(dt);
+    this.scriptManager.updateScripts(dt);
 
-    this.getActiveScene()
-      .getGameObjects()
-      .forEach((go) => {
-        go.calculateSpeed(dt);
-        go.updatePastTransformPosition();
-      });
+    this.physicsEngine.physicsUpdate(dt);
   }
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.imageSmoothingEnabled = false;
-    this.scriptList.forEach((script) => {
-      if (script.draw) {
-        script.draw(ctx);
-      }
-    });
+    this.scriptManager.drawScripts(ctx);
     this.physicsEngine.drawAllCollidersDebugLines(ctx);
     this.physicsEngine.drawAllCollidersBoundsDebugLines(
       ctx,
-      this.activeScene.getGameObjects(),
+      this.sceneManager.getActiveScene().getGameObjects(),
     );
-  }
-
-  registerScripts(scripts: MonoBehavior[]) {
-    scripts.forEach((script) => {
-      let l = 0;
-      let r = this.scriptList.length;
-
-      while (l < r) {
-        const m = (l + r) >> 1;
-        if (this.scriptList[m].order <= script.order) l = m + 1;
-        else r = m;
-      }
-
-      this.scriptList.splice(l, 0, script);
-    });
-  }
-
-  unregisterScript(scripts: MonoBehavior[]) {
-    scripts.forEach((script) => {
-      const idx = this.scriptList.indexOf(script);
-      if (idx !== -1) {
-        this.scriptList.splice(idx, 1);
-      }
-    });
   }
 
   spawn(
@@ -135,9 +91,9 @@ export class Engine {
       scale: opts?.scale,
     });
 
-    this.activeScene.addGameObject(go);
+    this.sceneManager.getActiveScene().addGameObject(go);
 
-    this.registerScripts(go.getScripts());
+    this.scriptManager.registerScriptsAtRuntime(go.getScripts());
     this.physicsEngine.registerColliders(go.getColliders());
     go.getScripts().forEach((script) => {
       script.start?.();
@@ -147,9 +103,9 @@ export class Engine {
   }
 
   despawn(go: GameObject) {
-    this.unregisterScript(go.getScripts());
+    this.scriptManager.unregisterScriptAtRuntime(go.getScripts());
     this.physicsEngine.unregisterColliders(go.getColliders());
-    this.activeScene.removeGameObject(go);
+    this.sceneManager.getActiveScene().removeGameObject(go);
   }
 
   getContext(): CanvasRenderingContext2D {

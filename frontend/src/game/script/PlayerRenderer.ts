@@ -1,5 +1,5 @@
 import { GameConfiguration } from "../constants";
-import { InputSystem } from "../manager/InputSystem";
+import { InputSystem } from "../manager/input-system";
 import { AnimatedSprite } from "../manager/model/animated-sprite";
 import { MonoBehavior } from "../manager/model/mono-behavior";
 import { PlayerStateManager } from "../models/player/state/PlayerStateManager";
