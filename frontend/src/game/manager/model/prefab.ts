@@ -1,9 +1,9 @@
 import type { Collider } from "../../physics/collider/Collider";
-import type { BoundingBox } from "../../types";
-import type { MonoBehavior } from "./mono-behavior";
-import type { Position } from "./transform/position";
-import type { Rotation } from "./transform/rotation";
-import type { Scale } from "./transform/scale";
+import type { BoundingBox } from "../../Types";
+import type { MonoBehavior } from "./MonoBehavior";
+import type { Position } from "./transform/Position";
+import type { Rotation } from "./transform/Rotation";
+import type { Scale } from "./transform/Scale";
 
 export abstract class Prefab {
   id: string;
@@ -11,7 +11,7 @@ export abstract class Prefab {
 
   rotation: Rotation;
   scale: Scale;
-  
+
   collisionBoundsOffset: Position;
 
   private scriptTypes: Array<new () => MonoBehavior> = [];

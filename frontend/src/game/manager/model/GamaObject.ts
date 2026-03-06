@@ -1,11 +1,11 @@
 import type { Collider } from "../../physics/collider/Collider";
-import type { BoundingBox } from "../../types";
-import { MonoBehavior } from "./mono-behavior";
+import type { BoundingBox } from "../../Types";
+import { MonoBehavior } from "./MonoBehavior";
 import { Physic } from "./physic/Physic";
 import { Speed } from "./physic/Speed";
-import { Prefab } from "./prefab";
-import type { Position } from "./transform/position";
-import type { Transform } from "./transform/transform";
+import { Prefab } from "./Prefab";
+import type { Position } from "./transform/Position";
+import type { Transform } from "./transform/Transform";
 
 type Ctor<T> = new (...args: any[]) => T;
 

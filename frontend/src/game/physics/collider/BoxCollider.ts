@@ -1,5 +1,5 @@
-import type { Position } from "../../manager/model/transform/position";
-import type { BoundingBox } from "../../types";
+import type { Position } from "../../manager/model/transform/Position";
+import type { BoundingBox } from "../../Types";
 import { Collider } from "./Collider";
 
 export class BoxCollider extends Collider {

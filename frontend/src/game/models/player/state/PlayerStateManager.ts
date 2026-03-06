@@ -1,6 +1,6 @@
-import { GameConfiguration } from "../../../constants";
-import { AnimatedSprite } from "../../../manager/model/animated-sprite";
-import type { GameObject } from "../../../manager/model/game-object";
+import { GameConfiguration } from "../../../Constants";
+import { AnimatedSprite } from "../../../manager/model/AnimatedSprite";
+import type { GameObject } from "../../../manager/model/GamaObject";
 import { PlayerBaseState } from "./PlayerBaseState";
 import { PlayerIdleState } from "./PlayerIdleState";
 import { PlayerWalkingState } from "./PlayerWalkingState";

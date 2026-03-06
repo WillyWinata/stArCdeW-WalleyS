@@ -1,5 +1,5 @@
-import type { MonoBehavior } from "./model/mono-behavior";
-import type { Scene } from "./model/scene";
+import type { MonoBehavior } from "./model/MonoBehavior";
+import type { Scene } from "./model/Scene";
 
 export class ScriptManager {
     private scriptList: MonoBehavior[] = [];

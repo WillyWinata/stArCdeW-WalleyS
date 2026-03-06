@@ -1,11 +1,11 @@
-import type { GameObject } from "./game-object";
+import type { GameObject } from "./GamaObject";
 
 export abstract class Scene {
   id: string = crypto.randomUUID();
   name: string;
 
   private gameObjects: GameObject[] = [];
-  
+
   constructor(name: string) {
     this.name = name;
   }

@@ -1,9 +1,9 @@
-import { Prefab } from "../manager/model/prefab";
-import { Position } from "../manager/model/transform/position";
-import { Rotation } from "../manager/model/transform/rotation";
-import { Scale } from "../manager/model/transform/scale";
+import { Prefab } from "../manager/model/Prefab";
+import { Position } from "../manager/model/transform/Position";
+import { Rotation } from "../manager/model/transform/Rotation";
+import { Scale } from "../manager/model/transform/Scale";
 import { MapCollider } from "../physics/collider/MapCollider";
-import { MapInit } from "../script/map_init";
+import { MapInit } from "../script/MapInit";
 
 type Dimension = {
   minX: number;

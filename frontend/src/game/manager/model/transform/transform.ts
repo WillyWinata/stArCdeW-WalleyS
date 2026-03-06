@@ -1,6 +1,6 @@
-import { Position } from "./position";
-import type { Rotation } from "./rotation";
-import type { Scale } from "./scale";
+import { Position } from "./Position";
+import type { Rotation } from "./Rotation";
+import type { Scale } from "./Scale";
 
 export class Transform {
   position: Position;

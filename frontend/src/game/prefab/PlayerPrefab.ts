@@ -1,8 +1,8 @@
-import { GameConfiguration } from "../constants";
-import { Prefab } from "../manager/model/prefab";
-import { Position } from "../manager/model/transform/position";
-import { Rotation } from "../manager/model/transform/rotation";
-import { Scale } from "../manager/model/transform/scale";
+import { GameConfiguration } from "../Constants";
+import { Prefab } from "../manager/model/Prefab";
+import { Position } from "../manager/model/transform/Position";
+import { Rotation } from "../manager/model/transform/Rotation";
+import { Scale } from "../manager/model/transform/Scale";
 import { BoxCollider } from "../physics/collider/BoxCollider";
 import { PlayerMovementController } from "../script/PlayerMovementController";
 import { PlayerRenderer } from "../script/PlayerRenderer";

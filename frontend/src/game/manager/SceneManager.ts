@@ -1,6 +1,6 @@
-import { MainScene } from "../scene/main-scene";
+import { MainScene } from "../scene/MainScene";
 import { SceneFactory } from "./factory/SceneFactory";
-import { Scene } from "./model/scene";
+import { Scene } from "./model/Scene";
 
 export class SceneManager{
     private activeScene: Scene;

@@ -1,6 +1,6 @@
-import type { Prefab } from "../model/prefab";
-import { Rotation } from "../model/transform/rotation";
-import { Scale } from "../model/transform/scale";
+import type { Prefab } from "../model/Prefab";
+import { Rotation } from "../model/transform/Rotation";
+import { Scale } from "../model/transform/Scale";
 
 export class PrefabFactory {
 

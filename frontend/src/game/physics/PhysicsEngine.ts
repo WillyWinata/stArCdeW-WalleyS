@@ -1,7 +1,7 @@
-import type { GameObject } from "../manager/model/game-object";
-import type { Scene } from "../manager/model/scene";
+import { GameObject } from "../manager/model/GamaObject";
+import type { Scene } from "../manager/model/Scene";
 import { SceneManager } from "../manager/SceneManager";
-import type { BoundingBox } from "../types";
+import type { BoundingBox } from "../Types";
 import type { Collider } from "./collider/Collider";
 
 type CollisionInfo = {

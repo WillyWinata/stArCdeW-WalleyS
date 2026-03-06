@@ -1,11 +1,11 @@
 import { PhysicsEngine } from "../physics/PhysicsEngine";
-import { GameObjectFactory } from "./factory/game-object-factory";
-import { InputSystem } from "./input-system";
-import type { GameObject } from "./model/game-object";
-import type { Prefab } from "./model/prefab";
-import type { Position } from "./model/transform/position";
-import type { Rotation } from "./model/transform/rotation";
-import type { Scale } from "./model/transform/scale";
+import { GameObjectFactory } from "./factory/GameObjectFactory";
+import { InputSystem } from "./InputSystem";
+import type { GameObject } from "./model/GamaObject";
+import type { Prefab } from "./model/Prefab";
+import type { Position } from "./model/transform/Position";
+import type { Rotation } from "./model/transform/Rotation";
+import type { Scale } from "./model/transform/Scale";
 import { SceneManager } from "./SceneManager";
 import { ScriptManager } from "./ScriptManager";
 

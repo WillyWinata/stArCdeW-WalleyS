@@ -1,4 +1,4 @@
-import { AnimatedSprite } from "../manager/model/animated-sprite";
+import { AnimatedSprite } from "../manager/model/AnimatedSprite";
 
 type TileCoord = { x: number; y: number };
 

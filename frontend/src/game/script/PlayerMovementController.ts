@@ -1,8 +1,8 @@
-import { GameConfiguration } from "../constants";
+import { GameConfiguration } from "../Constants";
 import { PlayerStateManager } from "../models/player/state/PlayerStateManager";
-import { MonoBehavior } from "../manager/model/mono-behavior";
-import { InputSystem } from "../manager/input-system";
-import type { GameObject } from "../manager/model/game-object";
+import { MonoBehavior } from "../manager/model/MonoBehavior";
+import { InputSystem } from "../manager/InputSystem";
+import type { GameObject } from "../manager/model/GamaObject";
 export class PlayerMovementController extends MonoBehavior {
   private inputSystem!: InputSystem;
   private movementConfig = GameConfiguration.GAME.CONTROLS.MOVEMENT;

@@ -1,7 +1,7 @@
-import { GameConfiguration } from "../../constants";
-import type { GameObject } from "../../manager/model/game-object";
-import type { Position } from "../../manager/model/transform/position";
-import type { BoundingBox } from "../../types";
+import { GameConfiguration } from "../../Constants";
+import type { GameObject } from "../../manager/model/GamaObject";
+import type { Position } from "../../manager/model/transform/Position";
+import type { BoundingBox } from "../../Types";
 
 export abstract class Collider {
   public gameObject?: GameObject;
