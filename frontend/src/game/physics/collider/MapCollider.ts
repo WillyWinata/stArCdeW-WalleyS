@@ -22,27 +22,28 @@ export class MapCollider extends Collider {
     this.positionList = positionList;
   }
 
-  public getWorldBox(): BoundingBox | BoundingBox[] {
-    const worldBoxList: BoundingBox[] = this.positionList.map((position) => {
-      return this.getWorldBoxByTilePosition(position);
+  public getWorldBoxAt(position: Position): BoundingBox[] {
+    return this.positionList.map((tilePos) => {
+      return this.getWorldBoxByTilePositionAt(position, tilePos);
     });
-    return worldBoxList;
   }
 
-  public getWorldBoxByTilePosition(tilePos: Position): BoundingBox {
+  public getWorldBoxByTilePositionAt(
+    worldPosition: Position,
+    tilePos: Position,
+  ): BoundingBox {
     if (!this.gameObject) {
       throw new Error("Game object not found");
     }
 
-    const goPos = this.gameObject.transform.position;
     const goScale = this.gameObject.transform.scale;
 
     const x =
-      goPos.x +
+      worldPosition.x +
       this.offset.x * goScale.x +
       tilePos.x * this.tileSize * goScale.x;
     const y =
-      goPos.y +
+      worldPosition.y +
       this.offset.y * goScale.y +
       tilePos.y * this.tileSize * goScale.y;
     const w = this.tileSize * goScale.x;
@@ -52,11 +53,12 @@ export class MapCollider extends Collider {
   }
 
   protected debugLines(ctx: CanvasRenderingContext2D): void {
-    const { x, y, w, h } = this.getWorldBoxByTilePosition(this.positionList[0]);
-
-    this.positionList.forEach((position) => {
+    this.positionList.forEach((tilePos) => {
       ctx.strokeStyle = this.debugColor;
-      const { x, y, w, h } = this.getWorldBoxByTilePosition(position);
+      const { x, y, w, h } = this.getWorldBoxByTilePositionAt(
+        this.gameObject!.transform.position,
+        tilePos,
+      );
       ctx.strokeRect(x, y, w, h);
     });
   }

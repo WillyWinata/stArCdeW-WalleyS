@@ -2,6 +2,7 @@ import { GameConfiguration } from "../constants";
 import { InputSystem } from "../manager/InputSystem";
 import { PlayerStateManager } from "../models/player/state/PlayerStateManager";
 import { MonoBehavior } from "../manager/model/mono-behavior";
+import type { GameObject } from "../manager/model/game-object";
 export class PlayerMovementController extends MonoBehavior {
   private inputSystem!: InputSystem;
   private movementConfig = GameConfiguration.GAME.CONTROLS.MOVEMENT;
@@ -13,6 +14,7 @@ export class PlayerMovementController extends MonoBehavior {
     super(0);
   }
 
+  handleCollision(gameObject: GameObject) {}
   start() {
     this.inputSystem = InputSystem.getInstance();
     this.playerStateManager = PlayerStateManager.getInstance();
@@ -21,11 +23,10 @@ export class PlayerMovementController extends MonoBehavior {
     this.gameObject.getColliders().forEach((col) => {
       col.onCollisionEnter = (other) => {
         console.log("Collided with ", other.gameObject?.name);
-        this.gameObject.transform.position.x -= this.speed * 0.016; 
-        this.gameObject.transform.position.y -= this.speed * 0.016; 
+        // this.gameObject.transform.position.x -= this.speed * 0.016;
+        // this.gameObject.transform.position.y -= this.speed * 0.016;
       };
     });
-
   }
 
   clone(): MonoBehavior {
@@ -33,6 +34,9 @@ export class PlayerMovementController extends MonoBehavior {
   }
 
   update(dt: number): void {
+    console.log(
+      `speedx: ${this.gameObject.physic.speed.x}, speedy: ${this.gameObject.physic.speed.y}`,
+    );
     const stateManager = this.playerStateManager;
     const walkUp = this.inputSystem.getKey(this.movementConfig.UP);
     const walkDown = this.inputSystem.getKey(this.movementConfig.DOWN);

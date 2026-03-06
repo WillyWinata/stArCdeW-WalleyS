@@ -16,7 +16,6 @@ export class Engine {
   private physicsEngine: PhysicsEngine;
   private activeScene: Scene;
   private scriptList: MonoBehavior[] = [];
-  
 
   private ctx!: CanvasRenderingContext2D;
   private lastTime = 0;
@@ -68,7 +67,7 @@ export class Engine {
     });
 
     this.physicsEngine.registerAllCollidersInScene(this.getActiveScene());
-    
+
     this.lastTime = performance.now();
     requestAnimationFrame(this.loop);
   }
@@ -78,10 +77,13 @@ export class Engine {
       script.update(dt);
     });
     this.physicsEngine.physicsUpdate(dt);
-    
-    // debug
-    const gos : GameObject = this.activeScene
-      .getGameObjects().filter((go) => go.name === "Map")[0];
+
+    this.getActiveScene()
+      .getGameObjects()
+      .forEach((go) => {
+        go.calculateSpeed(dt);
+        go.updatePastTransformPosition();
+      });
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -92,7 +94,10 @@ export class Engine {
       }
     });
     this.physicsEngine.drawAllCollidersDebugLines(ctx);
-    this.physicsEngine.drawAllCollidersBoundsDebugLines(ctx, this.activeScene.getGameObjects());
+    this.physicsEngine.drawAllCollidersBoundsDebugLines(
+      ctx,
+      this.activeScene.getGameObjects(),
+    );
   }
 
   registerScripts(scripts: MonoBehavior[]) {

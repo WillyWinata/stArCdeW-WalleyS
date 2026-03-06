@@ -1,6 +1,8 @@
 import type { Collider } from "../../physics/collider/Collider";
 import type { BoundingBox } from "../../types";
 import { MonoBehavior } from "./mono-behavior";
+import { Physic } from "./physic/Physic";
+import { Speed } from "./physic/Speed";
 import { Prefab } from "./prefab";
 import type { Position } from "./transform/position";
 import type { Transform } from "./transform/transform";
@@ -19,8 +21,10 @@ export class GameObject {
   id: string;
   name: string;
   transform: Transform;
+  physic: Physic;
   isLoaded: boolean;
 
+  private pastTransform: Transform;
   private colliderBoundsSize: { w: number; h: number };
   private collisionBoundsOffset: Position;
 
@@ -32,6 +36,19 @@ export class GameObject {
     this.id = crypto.randomUUID();
     this.name = context.name;
     this.transform = context.transform;
+    this.pastTransform = {
+      position: {
+        x: context.transform.position.x,
+        y: context.transform.position.y,
+      },
+      scale: {
+        x: context.transform.scale.x,
+        y: context.transform.scale.y,
+      },
+      rotation: context.transform.rotation,
+    };
+    this.physic = new Physic(new Speed(0, 0));
+
     this.isLoaded = false;
     this.collisionBoundsOffset = context.collisionBoundsOffset;
 
@@ -84,11 +101,22 @@ export class GameObject {
 
   getColliderBounds(): BoundingBox {
     return {
-      x: this.transform.position.x + this.collisionBoundsOffset.x * this.transform.scale.x,
-      y: this.transform.position.y + this.collisionBoundsOffset.y * this.transform.scale.y,
+      x:
+        this.transform.position.x +
+        this.collisionBoundsOffset.x * this.transform.scale.x,
+      y:
+        this.transform.position.y +
+        this.collisionBoundsOffset.y * this.transform.scale.y,
       w: this.colliderBoundsSize.w,
-      h: this.colliderBoundsSize.h
+      h: this.colliderBoundsSize.h,
     };
+  }
+
+  public calculateSpeed(dt: number) {
+    this.physic.speed.x =
+      (this.transform.position.x - this.pastTransform.position.x) / dt;
+    this.physic.speed.y =
+      (this.transform.position.y - this.pastTransform.position.y) / dt;
   }
 
   private calculateColliderBoundsSize(): { w: number; h: number } {
@@ -113,8 +141,11 @@ export class GameObject {
 
     return {
       w: maxX - minX,
-      h: maxY - minY
+      h: maxY - minY,
     };
   }
-
+  public updatePastTransformPosition() {
+    this.pastTransform.position.x = this.transform.position.x;
+    this.pastTransform.position.y = this.transform.position.y;
+  }
 }

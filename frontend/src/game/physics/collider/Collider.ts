@@ -6,7 +6,7 @@ import type { BoundingBox } from "../../types";
 export abstract class Collider {
   public gameObject?: GameObject;
 
-  public tag : string = "";
+  public tag: string = "";
   public offset: Position;
   public isTrigger: boolean;
   public debugColor: string;
@@ -26,7 +26,17 @@ export abstract class Collider {
     return this;
   }
 
-  public abstract getWorldBox(): BoundingBox | BoundingBox[];
+  public getWorldBox(): BoundingBox | BoundingBox[] {
+    if (!this.gameObject) {
+      throw new Error("Game object not found");
+    }
+
+    return this.getWorldBoxAt(this.gameObject.transform.position);
+  }
+
+  public abstract getWorldBoxAt(
+    position: Position,
+  ): BoundingBox | BoundingBox[];
 
   public onCollisionEnter(other: Collider): void {}
 
@@ -40,12 +50,12 @@ export abstract class Collider {
 
   public debugColliderBoundsLines(ctx: CanvasRenderingContext2D): void {
     if (!GameConfiguration.GAME.COLLIDER.DEBUG_MODE) return;
-    if(!this.gameObject) return;
-    
+    if (!this.gameObject) return;
+
     ctx.strokeStyle = "red";
 
     const { x, y, w, h } = this.gameObject.getColliderBounds();
-    ctx.strokeText(`B`, x, y);
+    ctx.strokeText("B", x, y);
     ctx.strokeRect(x, y, w, h);
   }
 }

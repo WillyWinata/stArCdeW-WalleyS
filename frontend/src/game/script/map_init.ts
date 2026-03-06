@@ -30,7 +30,6 @@ export class MapInit extends MonoBehavior {
 
   async start() {
     const engine = Engine.getInstance();
-    const ctx = engine.getContext();
     const width = engine.getContext().canvas.width;
     const height = engine.getContext().canvas.height;
     this.map = await MapParser.parseFileToMap(

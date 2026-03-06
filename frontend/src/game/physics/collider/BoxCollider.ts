@@ -21,16 +21,15 @@ export class BoxCollider extends Collider {
     this.height = height;
   }
 
-  public getWorldBox(): BoundingBox {
+  public getWorldBoxAt(position: Position): BoundingBox {
     if (!this.gameObject) {
       throw new Error("Game object not found");
     }
 
-    const goPos = this.gameObject.transform.position;
     const goScale = this.gameObject.transform.scale;
 
-    const x = goPos.x + this.offset.x * goScale.x;
-    const y = goPos.y + this.offset.y * goScale.y;
+    const x = position.x + this.offset.x * goScale.x;
+    const y = position.y + this.offset.y * goScale.y;
     const w = this.width * goScale.x;
     const h = this.height * goScale.y;
 
@@ -38,10 +37,14 @@ export class BoxCollider extends Collider {
   }
 
   protected debugLines(ctx: CanvasRenderingContext2D): void {
+    if (!this.gameObject) return;
+
     ctx.strokeStyle = this.debugColor;
 
-    const { x, y, w, h } = this.getWorldBox();
-    ctx.strokeText(`Nigger`, x, y);
+    const { x, y, w, h } = this.getWorldBoxAt(
+      this.gameObject.transform.position,
+    );
+    ctx.strokeText("Box", x, y);
     ctx.strokeRect(x, y, w, h);
   }
 }
