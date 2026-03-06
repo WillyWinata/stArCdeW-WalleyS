@@ -1,11 +1,11 @@
 import { Engine } from "../manager/engine";
-import { InputSystem } from "../manager/InputSystem";
+import { InputSystem } from "../manager/input-system";
 import { MonoBehavior } from "../manager/model/mono-behavior";
 import { Position } from "../manager/model/transform/position";
 import { Rotation } from "../manager/model/transform/rotation";
 import { Scale } from "../manager/model/transform/scale";
 import { PlayerPrefab } from "../prefab/player-prefab";
-import { PrefabFactory } from "../prefab/PrefabFactory";
+import { PrefabFactory } from "../manager/factory/PrefabFactory";
 
 export class Spawner extends MonoBehavior {
   constructor() {

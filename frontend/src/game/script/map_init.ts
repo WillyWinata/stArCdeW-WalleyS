@@ -4,7 +4,7 @@ import { MapParser } from "../util/map-parser";
 import { Engine } from "../manager/engine";
 import { PlayerPrefab } from "../prefab/player-prefab";
 import { Position } from "../manager/model/transform/position";
-import { PrefabFactory } from "../prefab/PrefabFactory";
+import { PrefabFactory } from "../manager/factory/PrefabFactory";
 
 export class MapInit extends MonoBehavior {
   clone(): MonoBehavior {
