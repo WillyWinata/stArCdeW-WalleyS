@@ -49,6 +49,15 @@ export class PhysicsEngine {
   }
 
   physicsUpdate(dt: number) {
+    const maxStep = 1 / 120;
+    let remaining = dt;
+
+    while (remaining > 0) {
+      const step = Math.min(remaining, maxStep);
+      this.checkCollision(step);
+      remaining -= step;
+    }
+
     this.sceneManager
       .getActiveScene()
       .getGameObjects()
@@ -56,8 +65,6 @@ export class PhysicsEngine {
         go.calculateSpeed(dt);
         go.updatePastTransformPosition();
       });
-
-    this.checkCollision(dt);
   }
 
   private getSeparationVector(
