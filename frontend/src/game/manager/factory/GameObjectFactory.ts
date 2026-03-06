@@ -1,10 +1,10 @@
 import { Collider } from "../../physics/collider/Collider";
-import { GameObject } from "../model/game-object";
-import type { Prefab } from "../model/prefab";
-import type { Position } from "../model/transform/position";
-import type { Rotation } from "../model/transform/rotation";
-import type { Scale } from "../model/transform/scale";
-import { Transform } from "../model/transform/transform";
+import { GameObject } from "../model/GamaObject";
+import type { Prefab } from "../model/Prefab";
+import type { Position } from "../model/transform/Position";
+import type { Rotation } from "../model/transform/Rotation";
+import type { Scale } from "../model/transform/Scale";
+import { Transform } from "../model/transform/Transform";
 
 export class GameObjectFactory {
   static Instantiate(

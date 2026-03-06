@@ -1,6 +1,6 @@
-import type { Scene } from "../model/scene";
-import { Rotation } from "../model/transform/rotation";
-import { Scale } from "../model/transform/scale";
+import type { Scene } from "../model/Scene";
+import { Rotation } from "../model/transform/Rotation";
+import { Scale } from "../model/transform/Scale";
 
 export class SceneFactory {
 

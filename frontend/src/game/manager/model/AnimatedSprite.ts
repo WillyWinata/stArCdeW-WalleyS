@@ -1,4 +1,4 @@
-import type { Position } from "./transform/position";
+import type { Position } from "./transform/Position";
 
 export class AnimatedSprite {
   private frames: HTMLImageElement[] = [];

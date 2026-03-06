@@ -1,11 +1,11 @@
 import { PhysicsEngine } from "../physics/PhysicsEngine";
-import { GameObjectFactory } from "./factory/game-object-factory";
-import { InputSystem } from "./input-system";
-import type { GameObject } from "./model/game-object";
-import type { Prefab } from "./model/prefab";
-import type { Position } from "./model/transform/position";
-import type { Rotation } from "./model/transform/rotation";
-import type { Scale } from "./model/transform/scale";
+import { GameObjectFactory } from "./factory/GameObjectFactory";
+import { InputSystem } from "./InputSystem";
+import type { GameObject } from "./model/GamaObject";
+import type { Prefab } from "./model/Prefab";
+import type { Position } from "./model/transform/Position";
+import type { Rotation } from "./model/transform/Rotation";
+import type { Scale } from "./model/transform/Scale";
 import { SceneManager } from "./SceneManager";
 import { ScriptManager } from "./ScriptManager";
 
@@ -20,9 +20,9 @@ export class Engine {
   private running = false;
 
   private constructor() {
-    this.physicsEngine = new PhysicsEngine();
-    this.scriptManager = new ScriptManager();
     this.sceneManager = new SceneManager();
+    this.physicsEngine = new PhysicsEngine(this.sceneManager);
+    this.scriptManager = new ScriptManager();
     this.scriptManager.registerScripts(this.sceneManager.getActiveScene());
   }
 
@@ -56,7 +56,9 @@ export class Engine {
     //Run the Start Method before the first Frame of the Scene
     this.scriptManager.startScripts();
 
-    this.physicsEngine.registerAllCollidersInScene(this.sceneManager.getActiveScene());
+    this.physicsEngine.registerAllCollidersInScene(
+      this.sceneManager.getActiveScene(),
+    );
 
     this.lastTime = performance.now();
     requestAnimationFrame(this.loop);
@@ -64,6 +66,7 @@ export class Engine {
 
   update(dt: number) {
     this.scriptManager.updateScripts(dt);
+
     this.physicsEngine.physicsUpdate(dt);
   }
 
@@ -71,7 +74,10 @@ export class Engine {
     ctx.imageSmoothingEnabled = false;
     this.scriptManager.drawScripts(ctx);
     this.physicsEngine.drawAllCollidersDebugLines(ctx);
-    this.physicsEngine.drawAllCollidersBoundsDebugLines(ctx, this.sceneManager.getActiveScene().getGameObjects());
+    this.physicsEngine.drawAllCollidersBoundsDebugLines(
+      ctx,
+      this.sceneManager.getActiveScene().getGameObjects(),
+    );
   }
 
   spawn(

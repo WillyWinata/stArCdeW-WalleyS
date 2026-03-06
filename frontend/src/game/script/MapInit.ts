@@ -1,9 +1,9 @@
-import { MonoBehavior } from "../manager/model/mono-behavior";
-import type { AnimatedSprite } from "../manager/model/animated-sprite";
-import { MapParser } from "../util/map-parser";
-import { Engine } from "../manager/engine";
-import { PlayerPrefab } from "../prefab/player-prefab";
-import { Position } from "../manager/model/transform/position";
+import { MonoBehavior } from "../manager/model/MonoBehavior";
+import type { AnimatedSprite } from "../manager/model/AnimatedSprite";
+import { MapParser } from "../util/MapParser";
+import { Engine } from "../manager/Engine";
+import { PlayerPrefab } from "../prefab/PlayerPrefab";
+import { Position } from "../manager/model/transform/Position";
 import { PrefabFactory } from "../manager/factory/PrefabFactory";
 
 export class MapInit extends MonoBehavior {
@@ -30,7 +30,6 @@ export class MapInit extends MonoBehavior {
 
   async start() {
     const engine = Engine.getInstance();
-    const ctx = engine.getContext();
     const width = engine.getContext().canvas.width;
     const height = engine.getContext().canvas.height;
     this.map = await MapParser.parseFileToMap(

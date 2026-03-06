@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { InputSystem } from "./game/manager/input-system";
-  import { Engine } from "./game/manager/engine";
+  import { InputSystem } from "./game/manager/InputSystem";
+  import { Engine } from "./game/manager/Engine";
 
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D | null;

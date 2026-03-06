@@ -1,8 +1,8 @@
-import { Prefab } from "../manager/model/prefab";
-import type { Position } from "../manager/model/transform/position";
-import { Rotation } from "../manager/model/transform/rotation";
-import { Scale } from "../manager/model/transform/scale";
-import { Spawner } from "../script/spawner";
+import { Prefab } from "../manager/model/Prefab";
+import type { Position } from "../manager/model/transform/Position";
+import { Rotation } from "../manager/model/transform/Rotation";
+import { Scale } from "../manager/model/transform/Scale";
+import { Spawner } from "../script/Spawner";
 import { PrefabFactory } from "../manager/factory/PrefabFactory";
 
 export class SpawnerPrefab extends Prefab {

@@ -1,11 +1,11 @@
-import { GameObjectFactory } from "../manager/factory/game-object-factory";
-import { Scene } from "../manager/model/scene";
-import { Position } from "../manager/model/transform/position";
-import { Rotation } from "../manager/model/transform/rotation";
-import { Scale } from "../manager/model/transform/scale";
-import { MapPrefab } from "../prefab/map-prefab";
+import { GameObjectFactory } from "../manager/factory/GameObjectFactory";
+import { Scene } from "../manager/model/Scene";
+import { Position } from "../manager/model/transform/Position";
+import { Rotation } from "../manager/model/transform/Rotation";
+import { Scale } from "../manager/model/transform/Scale";
+import { MapPrefab } from "../prefab/MapPrefab";
 import { PrefabFactory } from "../manager/factory/PrefabFactory";
-import { MapInit } from "../script/map_init";
+import { MapInit } from "../script/MapInit";
 
 export class MainScene extends Scene {
 

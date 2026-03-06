@@ -1,7 +1,7 @@
-import { GameConfiguration } from "../constants";
-import { InputSystem } from "../manager/input-system";
-import { AnimatedSprite } from "../manager/model/animated-sprite";
-import { MonoBehavior } from "../manager/model/mono-behavior";
+import { GameConfiguration } from "../Constants";
+import { InputSystem } from "../manager/InputSystem";
+import { AnimatedSprite } from "../manager/model/AnimatedSprite";
+import { MonoBehavior } from "../manager/model/MonoBehavior";
 import { PlayerStateManager } from "../models/player/state/PlayerStateManager";
 
 export class PlayerRenderer extends MonoBehavior {
