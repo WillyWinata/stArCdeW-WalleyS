@@ -4,21 +4,24 @@ import { Position } from "../manager/model/transform/position";
 import { Rotation } from "../manager/model/transform/rotation";
 import { Scale } from "../manager/model/transform/scale";
 import { MapPrefab } from "../prefab/map-prefab";
-import { PrefabFactory } from "../prefab/PrefabFactory";
+import { PrefabFactory } from "../manager/factory/PrefabFactory";
 import { MapInit } from "../script/map_init";
 
-export class MainScene {
-  static getScene(): Scene {
-    const scene = new Scene("MainScene");
+export class MainScene extends Scene {
 
+  constructor(name: string) {
+    super(name);
+    this.initializeScene();
+  }
+
+  initializeScene(): void {
     const map = GameObjectFactory.Instantiate(
       PrefabFactory.getPrefab(MapPrefab),
       new Position(0, 0),
-    );
+    ); 
 
     const mi = map.getScript(MapInit);
     mi!.mapPath = "/assets/game/journey-of-pk/map/level_0.txt";
-    scene.addGameObjects(map);
-    return scene;
+    this.addGameObjects(map);
   }
 }

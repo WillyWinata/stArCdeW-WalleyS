@@ -3,7 +3,7 @@ import type { Position } from "../manager/model/transform/position";
 import { Rotation } from "../manager/model/transform/rotation";
 import { Scale } from "../manager/model/transform/scale";
 import { Spawner } from "../script/spawner";
-import { PrefabFactory } from "./PrefabFactory";
+import { PrefabFactory } from "../manager/factory/PrefabFactory";
 
 export class SpawnerPrefab extends Prefab {
   

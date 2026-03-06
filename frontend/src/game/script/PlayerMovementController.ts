@@ -1,7 +1,7 @@
 import { GameConfiguration } from "../constants";
-import { InputSystem } from "../manager/InputSystem";
 import { PlayerStateManager } from "../models/player/state/PlayerStateManager";
 import { MonoBehavior } from "../manager/model/mono-behavior";
+import { InputSystem } from "../manager/input-system";
 export class PlayerMovementController extends MonoBehavior {
   private inputSystem!: InputSystem;
   private movementConfig = GameConfiguration.GAME.CONTROLS.MOVEMENT;
